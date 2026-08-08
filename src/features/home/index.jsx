@@ -1,25 +1,12 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import SiteNav from "../../components/site-nav";
+import SiteFooter from "../../components/site-footer";
+import ContactSection from "../../components/contact-section";
+import { openCalendly, useCalendlyWidget } from "../../lib/calendly";
+import { siteNavLinks } from "../../lib/nav-links";
+import { navTo } from "../../lib/navigate";
 
 const fmt = v => "₪" + Math.round(v).toLocaleString("he-IL");
-const navTo = (page, anchor) => window.dispatchEvent(
-  new CustomEvent("app:navigate", { detail: { page, anchor } })
-);
-
-/* ─── Calendly Config ────────────────────────────────────── */
-const CALENDLY_URL = "https://calendly.com/shlomo-mashpro/new-meeting";
-
-/**
- * Opens Calendly in a popup widget. Falls back to a new tab
- * if the Calendly script hasn't loaded yet.
- */
-function openCalendly() {
-  if (window.Calendly?.initPopupWidget) {
-    window.Calendly.initPopupWidget({ url: CALENDLY_URL });
-    return false;
-  }
-  window.open(CALENDLY_URL, "_blank", "noopener,noreferrer");
-  return false;
-}
 
 /* ─── Sub-components ─────────────────────────────────────── */
 function ServiceCard({ icon, title, desc }) {
@@ -70,18 +57,6 @@ function TestimonialCard({ text, initials, name, location }) {
   );
 }
 
-function ContactItem({ icon, label, value }) {
-  return (
-    <div className="contact-item">
-      <div className="contact-item-icon">{icon}</div>
-      <div className="contact-item-txt">
-        <strong>{label}</strong>
-        <span>{value}</span>
-      </div>
-    </div>
-  );
-}
-
 /* ─── Hero Mini Calculator ───────────────────────────────── */
 function HeroCalc() {
   const [loan,  setLoan]  = useState(1000000);
@@ -119,135 +94,8 @@ function HeroCalc() {
         <div className="calc-result-lbl">תשלום חודשי משוער</div>
         <div className="calc-result-val">{fmt(monthly)}</div>
       </div>
-      <button className="calc-btn" onClick={() => navTo("home", "contact")}>
+      <button className="calc-btn" onClick={() => navTo("contact")}>
         קבל הצעה אישית ›
-      </button>
-    </div>
-  );
-}
-
-/* ─── Contact Form ───────────────────────────────────────── */
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
-
-const initialForm = {
-  firstName: "", lastName: "", phone: "", email: "",
-  service: "משכנתא לדירה ראשונה", amount: "", notes: "",
-};
-
-function ContactForm({ onSubmit, onError }) {
-  const [form, setForm]       = useState(initialForm);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors]   = useState({});
-
-  const update = (key, val) => {
-    setForm(f => ({ ...f, [key]: val }));
-    if (errors[key]) setErrors(e => ({ ...e, [key]: null }));
-  };
-
-  const validate = () => {
-    const err = {};
-    if (!form.firstName.trim()) err.firstName = "שדה חובה";
-    if (!form.lastName.trim())  err.lastName  = "שדה חובה";
-    if (!form.phone.trim())     err.phone     = "שדה חובה";
-    else if (!/^[\d\-\+\s\(\)]{9,}$/.test(form.phone)) err.phone = "מספר טלפון לא תקין";
-    if (!form.email.trim())     err.email     = "שדה חובה";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) err.email = "אימייל לא תקין";
-    return err;
-  };
-
-  const handle = async () => {
-    const err = validate();
-    setErrors(err);
-    if (Object.keys(err).length > 0) return;
-
-    setLoading(true);
-    try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Accept":       "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          "שם פרטי":    form.firstName,
-          "שם משפחה":   form.lastName,
-          "טלפון":      form.phone,
-          email:        form.email,       // Formspree uses this as Reply-To
-          "סוג השירות": form.service,
-          "סכום מבוקש": form.amount,
-          "הערות":      form.notes,
-          _subject:     `פנייה חדשה מהאתר — ${form.firstName} ${form.lastName}`,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Submit failed");
-
-      onSubmit?.();
-      setForm(initialForm);
-    } catch (e) {
-      onError?.();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="contact-form">
-      <h3>השאר פרטים לייעוץ חינם</h3>
-      <div className="form-row">
-        <div className="form-field">
-          <label>שם פרטי *</label>
-          <input type="text" placeholder="ישראל" value={form.firstName}
-            className={errors.firstName ? "input-error" : ""}
-            onChange={e => update("firstName", e.target.value)} />
-          {errors.firstName && <span className="error-text">{errors.firstName}</span>}
-        </div>
-        <div className="form-field">
-          <label>שם משפחה *</label>
-          <input type="text" placeholder="ישראלי" value={form.lastName}
-            className={errors.lastName ? "input-error" : ""}
-            onChange={e => update("lastName", e.target.value)} />
-          {errors.lastName && <span className="error-text">{errors.lastName}</span>}
-        </div>
-      </div>
-      <div className="form-row">
-        <div className="form-field">
-          <label>טלפון *</label>
-          <input type="tel" placeholder="050-0000000" dir="ltr" value={form.phone}
-            className={errors.phone ? "input-error" : ""}
-            onChange={e => update("phone", e.target.value)} />
-          {errors.phone && <span className="error-text">{errors.phone}</span>}
-        </div>
-        <div className="form-field">
-          <label>אימייל *</label>
-          <input type="email" placeholder="your@email.com" dir="ltr" value={form.email}
-            className={errors.email ? "input-error" : ""}
-            onChange={e => update("email", e.target.value)} />
-          {errors.email && <span className="error-text">{errors.email}</span>}
-        </div>
-      </div>
-      <div className="form-field">
-        <label>סוג השירות</label>
-        <select value={form.service} onChange={e => update("service", e.target.value)}>
-          <option>משכנתא לדירה ראשונה</option>
-          <option>מיחזור משכנתא</option>
-          <option>משכנתא לבנייה עצמית</option>
-          <option>נדל"ן להשקעה</option>
-          <option>ייעוץ לשיפור תנאים</option>
-        </select>
-      </div>
-      <div className="form-field">
-        <label>סכום המשכנתא המבוקש (₪)</label>
-        <input type="number" placeholder="1,000,000" dir="ltr" value={form.amount}
-          onChange={e => update("amount", e.target.value)} />
-      </div>
-      <div className="form-field">
-        <label>הערות נוספות (אופציונלי)</label>
-        <textarea rows={3} placeholder="ספר/י לנו עוד על הצורך שלך..."
-          value={form.notes} onChange={e => update("notes", e.target.value)} />
-      </div>
-      <button className="form-submit" onClick={handle} disabled={loading}>
-        {loading ? "שולח..." : "שלח פנייה — ייעוץ חינם ›"}
       </button>
     </div>
   );
@@ -302,59 +150,15 @@ const BANK_RATES = [
 
 /* ─── Home Root ──────────────────────────────────────────── */
 export default function Home() {
-  const [toast, setToast] = useState({ show: false, type: "success", msg: "" });
-
-  const showToast = (type, msg) => {
-    setToast({ show: true, type, msg });
-    setTimeout(() => setToast(t => ({ ...t, show: false })), 4000);
-  };
-
-  const onFormSuccess = () => showToast("success", "✓ הפנייה נשלחה! נחזור אליך תוך שעה");
-  const onFormError   = () => showToast("error",   "✗ שליחה נכשלה. נסה שוב או צור קשר טלפוני");
-
-  // Lazy-load Calendly widget assets once when Home mounts.
-  useEffect(() => {
-    if (document.getElementById("calendly-script")) return;
-
-    const css = document.createElement("link");
-    css.rel  = "stylesheet";
-    css.href = "https://assets.calendly.com/assets/external/widget.css";
-    document.head.appendChild(css);
-
-    const script = document.createElement("script");
-    script.id    = "calendly-script";
-    script.src   = "https://assets.calendly.com/assets/external/widget.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // Smooth scroll handler factory
-  const link = (id) => (e) => { e.preventDefault(); scrollTo(id); };
+  useCalendlyWidget();
 
   return (
     <div dir="rtl" lang="he" className="home-page">
       {/* NAV */}
-      <nav>
-        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="logo">
-          <span className="logo-dot">●</span> משכנתא<span>PRO</span>
-        </a>
-        <div className="nav-links">
-          <a href="#services"     onClick={link("services")}>שירותים</a>
-          <a href="#process"      onClick={link("process")}>תהליך</a>
-          <a href="#testimonials" onClick={link("testimonials")}>לקוחות</a>
-          <a href="#contact"      onClick={link("contact")}>צור קשר</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); navTo("calculators"); }}>
-            מחשבונים
-          </a>
-        </div>
-        <button className="nav-cta" onClick={openCalendly}>
-          📅 קבע פגישה
-        </button>
-      </nav>
+      <SiteNav
+        links={siteNavLinks("home")}
+        cta={{ label: "📅 קבע פגישה", onClick: openCalendly }}
+      />
 
       {/* HERO */}
       <section className="hero">
@@ -367,7 +171,8 @@ export default function Home() {
               <button className="btn-primary" onClick={openCalendly}>
                 📅 קבע פגישה עכשיו ›
               </button>
-              <a href="#contact" onClick={link("contact")} className="btn-secondary">
+              <a href="#/contact" className="btn-secondary"
+                 onClick={(e) => { e.preventDefault(); navTo("contact"); }}>
                 השאר פרטים
               </a>
             </div>
@@ -465,64 +270,10 @@ export default function Home() {
       </section>
 
       {/* CONTACT */}
-      <section className="contact-bg" id="contact">
-        <div className="container">
-          <div className="contact-grid">
-            <div className="contact-info">
-              <div className="section-tag">צור קשר</div>
-              <h2 className="section-title">מוכן להתחיל?<br />נשמח לעזור.</h2>
-              <p>השאר פרטים ויועץ מוסמך יחזור אליך תוך שעה בשעות העבודה — ללא עלות וללא התחייבות.</p>
-
-              {/* Calendly CTA */}
-              <div className="calendly-cta">
-                <div className="calendly-cta-icon">📅</div>
-                <div className="calendly-cta-body">
-                  <h4>קבע פגישה כבר עכשיו</h4>
-                  <p>בחר תאריך ושעה שמתאימים לך — וקבל אישור מיידי</p>
-                </div>
-                <button className="calendly-btn" onClick={openCalendly}>
-                  קבע פגישה ›
-                </button>
-              </div>
-
-              <div className="contact-items">
-                <ContactItem icon="📞" label="טלפון"        value="03-000-0000" />
-                <ContactItem icon="📧" label="אימייל"       value="info@mashpro.co.il" />
-                <ContactItem icon="🕐" label="שעות פעילות" value="א'–ה' 08:00–19:00 | ו' 08:00–13:00" />
-                <ContactItem icon="📍" label="כתובת"        value="רחוב רוטשילד 1, תל אביב" />
-              </div>
-            </div>
-            <ContactForm onSubmit={onFormSuccess} onError={onFormError} />
-          </div>
-        </div>
-      </section>
+      <ContactSection />
 
       {/* FOOTER */}
-      <footer>
-        <div className="footer-logo">משכנתא<span>PRO</span></div>
-        <div className="footer-links">
-          <a href="#" onClick={(e) => e.preventDefault()}>אודות</a>
-          <a href="#services"     onClick={link("services")}>שירותים</a>
-          <a href="#process"      onClick={link("process")}>תהליך</a>
-          <a href="#testimonials" onClick={link("testimonials")}>המלצות</a>
-          <a href="#contact"      onClick={link("contact")}>צור קשר</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); navTo("calculators"); }}>
-            מחשבונים
-          </a>
-          <a href="#" onClick={(e) => e.preventDefault()}>מדיניות פרטיות</a>
-        </div>
-        <hr className="footer-divider" />
-        <p>
-          משכנתאPRO — יועצי משכנתא מורשים | רישיון ייעוץ פיננסי מס' 000000<br />
-          © 2025 משכנתאPRO.co.il | כל הזכויות שמורות<br />
-          <small>האתר מספק מידע כללי בלבד ואינו מהווה ייעוץ פיננסי מחייב</small>
-        </p>
-      </footer>
-
-      {/* TOAST */}
-      <div className={`toast toast-${toast.type} ${toast.show ? "show" : ""}`}>
-        {toast.msg}
-      </div>
+      <SiteFooter />
     </div>
   );
 }
