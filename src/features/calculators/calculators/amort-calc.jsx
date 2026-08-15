@@ -1,10 +1,14 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { fmt, pmt } from "../utils";
 import { Field } from "../ui/field";
+import { Segmented } from "../ui/segmented";
 import { Metric } from "../ui/metric";
 import { FullCard } from "../ui/full-card";
+import { MoneyInput } from "../../../components/money-input";
 
 export function AmortCalc() {
+  const { t } = useTranslation();
   const [loan,  setLoan]  = useState(1000000);
   const [rate,  setRate]  = useState(4.5);
   const [years, setYears] = useState(25);
@@ -36,40 +40,42 @@ export function AmortCalc() {
   }, [loan, rate, years, freq]);
 
   return (
-    <FullCard icon="📊" title="לוח סילוקין"
-      subtitle="פירוט תשלומי קרן וריבית לכל חודש לאורך חיי המשכנתא">
+    <FullCard icon="📊" title={t("calculators.amort.title")}
+      subtitle={t("calculators.amort.subtitle")}>
       <div className="amort-controls">
-        <Field label="סכום משכנתא ₪">
-          <input type="number" value={loan} onChange={e => setLoan(+e.target.value)} />
+        <Field label={t("calculators.common.loanAmount")}>
+          <MoneyInput value={loan} onChange={setLoan} />
         </Field>
-        <Field label="ריבית שנתית %">
+        <Field label={t("calculators.common.annualRate")}>
           <input type="number" value={rate} step={0.1} onChange={e => setRate(+e.target.value)} />
         </Field>
-        <Field label="תקופה (שנים)">
+        <Field label={t("calculators.common.term")}>
           <select value={years} onChange={e => setYears(+e.target.value)}>
             {[10,15,20,25,30].map(y => <option key={y} value={y}>{y}</option>)}
           </select>
         </Field>
-        <Field label="תדירות הצגה">
-          <select value={freq} onChange={e => setFreq(+e.target.value)}>
-            <option value={1}>חודשי</option>
-            <option value={12}>שנתי</option>
-          </select>
-        </Field>
+        <Segmented label={t("calculators.amort.frequency")} value={freq} onChange={setFreq}
+          options={[
+            { value: 1,  label: t("calculators.amort.monthly") },
+            { value: 12, label: t("calculators.amort.yearly")  },
+          ]} />
       </div>
       <div className="output-grid" style={{marginBottom:"1.5rem"}}>
-        <Metric label="תשלום חודשי"  value={fmt(summary.m)}        color="gold" />
-        <Metric label="סה״כ החזר"    value={fmt(summary.totalPay)} />
-        <Metric label="סה״כ ריבית"   value={fmt(summary.totalInt)} color="red" />
-        <Metric label="אחוז ריבית"
+        <Metric label={t("calculators.common.monthlyPayment")} value={fmt(summary.m)}        color="gold" />
+        <Metric label={t("calculators.common.totalPaid")}      value={fmt(summary.totalPay)} />
+        <Metric label={t("calculators.common.totalInterest")}  value={fmt(summary.totalInt)} color="red" />
+        <Metric label={t("calculators.amort.interestShare")}
           value={`${Math.round(summary.totalInt / summary.totalPay * 100)}%`} />
       </div>
       <div className="amort-wrap">
         <table className="amort-table">
           <thead>
             <tr>
-              <th>{freq === 1 ? "חודש" : "שנה"}</th>
-              <th>תשלום</th><th>קרן</th><th>ריבית</th><th>יתרה</th>
+              <th>{freq === 1 ? t("calculators.amort.colMonth") : t("calculators.amort.colYear")}</th>
+              <th>{t("calculators.amort.colPayment")}</th>
+              <th>{t("calculators.amort.colPrincipal")}</th>
+              <th>{t("calculators.amort.colInterest")}</th>
+              <th>{t("calculators.amort.colBalance")}</th>
             </tr>
           </thead>
           <tbody>

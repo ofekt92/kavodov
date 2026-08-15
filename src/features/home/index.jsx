@@ -1,18 +1,29 @@
-import { useState, useMemo } from "react";
+import { Fragment, useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import SiteNav from "../../components/site-nav";
 import SiteFooter from "../../components/site-footer";
 import ContactSection from "../../components/contact-section";
+import Carousel from "../../components/carousel";
 import { openCalendly, useCalendlyWidget } from "../../lib/calendly";
 import { siteNavLinks } from "../../lib/nav-links";
 import { navTo } from "../../lib/navigate";
+import { numberLocale } from "../../i18n";
+import { SERVICE_ICONS } from "../../lib/service-icons";
+import { useMediaQuery } from "../../lib/use-media-query";
+import { MoneyInput } from "../../components/money-input";
 
-const fmt = v => "₪" + Math.round(v).toLocaleString("he-IL");
+const fmt = v => "₪" + Math.round(v).toLocaleString(numberLocale());
 
 /* ─── Sub-components ─────────────────────────────────────── */
-function ServiceCard({ icon, title, desc }) {
+function ServiceCard({ id, title, desc }) {
+  const Icon = SERVICE_ICONS[id];
   return (
     <div className="service-card">
-      <div className="service-icon">{icon}</div>
+      <div className="service-icon">
+        {/* 2 rather than the 1.75 used on light surfaces — thin strokes lose
+            weight in gold-on-navy at this size */}
+        {Icon ? <Icon size={24} strokeWidth={2} aria-hidden="true" /> : null}
+      </div>
       <h3>{title}</h3>
       <p>{desc}</p>
     </div>
@@ -31,12 +42,33 @@ function WhyItem({ icon, title, desc }) {
   );
 }
 
+function SweepText({ text }) {
+  const words = String(text).split(" ");
+  // --p is 0..1 across the string, so the sweep takes the same time whatever the length
+  const total = Math.max(1, words.reduce((n, w) => n + [...w].length, 0) - 1);
+  let idx = 0;
+  return (
+    <span className="sweep-text">
+      {words.map((word, wi) => (
+        <Fragment key={wi}>
+          <span className="sweep-word">
+            {[...word].map((ch, ci) => (
+              <span className="sweep-char" key={ci} style={{ "--p": idx++ / total }}>{ch}</span>
+            ))}
+          </span>
+          {wi < words.length - 1 ? " " : null}
+        </Fragment>
+      ))}
+    </span>
+  );
+}
+
 function ProcessStep({ num, title, desc }) {
   return (
     <div className="process-step">
       <div className="step-num">{num}</div>
-      <h4>{title}</h4>
-      <p>{desc}</p>
+      <h4><SweepText text={title} /></h4>
+      <p><SweepText text={desc} /></p>
     </div>
   );
 }
@@ -59,6 +91,7 @@ function TestimonialCard({ text, initials, name, location }) {
 
 /* ─── Hero Mini Calculator ───────────────────────────────── */
 function HeroCalc() {
+  const { t } = useTranslation();
   const [loan,  setLoan]  = useState(1000000);
   const [years, setYears] = useState(25);
   const [rate,  setRate]  = useState(4.5);
@@ -71,109 +104,73 @@ function HeroCalc() {
 
   return (
     <div className="hero-card">
-      <h3>מחשבון תשלום חודשי</h3>
+      <h3>{t("home.heroCalc.title")}</h3>
       <div className="calc-field">
-        <label>סכום המשכנתא (₪)</label>
-        <input type="number" value={loan} min={0}
-          onChange={e => setLoan(+e.target.value)} />
+        <label>{t("home.heroCalc.amount")}</label>
+        <MoneyInput value={loan} onChange={setLoan} />
       </div>
       <div className="calc-field">
-        <label>תקופה (שנים)</label>
+        <label>{t("home.heroCalc.term")}</label>
         <select value={years} onChange={e => setYears(+e.target.value)}>
           {[10,15,20,25,30].map(y => (
-            <option key={y} value={y}>{y} שנים</option>
+            <option key={y} value={y}>{t("home.heroCalc.termOption", { years: y })}</option>
           ))}
         </select>
       </div>
       <div className="calc-field">
-        <label>ריבית שנתית (%)</label>
+        <label>{t("home.heroCalc.rate")}</label>
         <input type="number" value={rate} step={0.1} min={0} max={20}
           onChange={e => setRate(+e.target.value)} />
       </div>
       <div className="calc-result">
-        <div className="calc-result-lbl">תשלום חודשי משוער</div>
+        <div className="calc-result-lbl">{t("home.heroCalc.resultLabel")}</div>
         <div className="calc-result-val">{fmt(monthly)}</div>
       </div>
       <button className="calc-btn" onClick={() => navTo("contact")}>
-        קבל הצעה אישית ›
+        {t("home.heroCalc.cta")}
       </button>
     </div>
   );
 }
 
-/* ─── Static Data ────────────────────────────────────────── */
-const SERVICES = [
-  { icon: "🏠",  title: "משכנתא לדירה ראשונה", desc: "ייעוץ מלא לרוכשי דירה ראשונה — נסביר לך כל מסלול, נבנה תמהיל אופטימלי ונלווה אותך עד הגשת הבקשה." },
-  { icon: "🔄",  title: "מיחזור משכנתא",       desc: "בדיקה חינמית אם כדאי למחזר. אם כן — ננהל עבורך את כל התהליך ונשיג לך ריביות נמוכות יותר." },
-  { icon: "🏗️", title: "משכנתא לבנייה עצמית", desc: "ייעוץ מותאם לבנייה עצמית ופרויקטים כולל ניהול שלבי השחרור מול הבנק." },
-  { icon: "📊",  title: "ייעוץ לשיפור תנאים",   desc: "ניתוח המשכנתא הקיימת שלך ומציאת דרכים להוזיל את ההחזר החודשי כבר מהחודש הבא." },
-  { icon: "🏢",  title: "נדל\"ן להשקעה",        desc: "ייעוץ ממוקד למשקיעים — מינוף נכון, מבנה מימון חכם ואסטרטגיית יציאה." },
-  { icon: "🤝",  title: "ייצוג מול הבנק",       desc: "אנחנו מנהלים עבורך את המשא ומתן — כך שתקבל את התנאים הטובים ביותר שניתן להשיג." },
-];
-
-const WHY_US = [
-  { icon: "✅", title: "ייעוץ בלתי תלוי",     desc: "אנחנו לא מחויבים לאף בנק — עובדים עם כל הבנקים ומשיגים את הריבית הנמוכה ביותר." },
-  { icon: "⚡", title: "חיסכון בזמן ובכסף",   desc: "אנחנו מטפלים בניירת, בתיאום ובמשא ומתן — אתה רק חותם." },
-  { icon: "🔒", title: "שקיפות מלאה",         desc: "ידעת את כל העלויות, ההשוואות והחלופות לפני שתחתום על כל מסמך." },
-  { icon: "📞", title: "ליווי לאורך כל הדרך", desc: "מהפגישה הראשונה ועד מסירת המפתח — אנחנו זמינים לכל שאלה." },
-];
-
-const PROCESS = [
-  { num: 1, title: "פגישת ייעוץ ראשונית",  desc: "שיחה חינמית ללא התחייבות — נבין את הצרכים שלך ונבדוק כושר השתכרות." },
-  { num: 2, title: "בניית תמהיל אופטימלי", desc: "נתאים את שילוב המסלולים המתאים ביותר לצרכים ולמצב הפיננסי שלך." },
-  { num: 3, title: "מו\"מ מול הבנקים",     desc: "נגיש את הבקשה לכמה בנקים במקביל ונמשוך את הריבית הנמוכה ביותר." },
-  { num: 4, title: "חתימה וסגירה",         desc: "נלווה אותך לחתימה, נוודא שכל הניירת תקינה — ונחגוג יחד!" },
-];
-
-const TESTIMONIALS = [
-  { initials: "יד", name: "יוסי ודנה כהן",   location: "תל אביב • מיחזור משכנתא",
-    text: "חסכנו מעל 120,000 ₪ לאורך תקופת המשכנתא. הצוות של משכנתאPRO היה זמין בכל שאלה וניהל הכל בצורה מקצועית ביותר. ממליצים בחום!" },
-  { initials: "שמ", name: "שירה ומיכה לוי", location: "רחובות • דירה ראשונה",
-    text: "כרוכשי דירה ראשונה לא הבנו כלום — הם הסבירו לנו הכל בסבלנות, בנו לנו תמהיל מעולה והגישו לשלושה בנקים. קיבלנו תנאים שלא חשבנו שנשיג." },
-  { initials: "אב", name: "אבי ברקוביץ",     location: "פתח תקווה • נדל\"ן להשקעה",
-    text: "רציתי להשקיע בנדל\"ן אבל לא ידעתי מאיפה להתחיל עם המימון. הייעוץ של משכנתאPRO היה מדויק, מהיר ובסוף הצלחתי לסגור עסקה מצוינת." },
-];
-
-const STATS = [
-  { num: "+3,200", lbl: "לקוחות מרוצים" },
-  { num: "₪480M",  lbl: "משכנתאות שניהלנו" },
-  { num: "12+",    lbl: "שנות ניסיון" },
-  { num: "97%",    lbl: "שביעות רצון לקוחות" },
-];
-
-const BANK_RATES = [
-  { name: "בנק הפועלים", rate: "4.15%" },
-  { name: "בנק לאומי",   rate: "4.22%" },
-  { name: "בנק מזרחי",   rate: "4.19%" },
-  { name: "בנק דיסקונט", rate: "4.31%" },
-];
-
 /* ─── Home Root ──────────────────────────────────────────── */
 export default function Home() {
+  const { t } = useTranslation();
   useCalendlyWidget();
+  const narrow = useMediaQuery("(max-width: 899px)");
+
+  const stats        = t("home.stats",             { returnObjects: true });
+  const services     = t("home.services.items",    { returnObjects: true });
+  const whyUs        = t("home.why.items",         { returnObjects: true });
+  const bankRates    = t("home.why.banks",         { returnObjects: true });
+  const process      = t("home.process.steps",     { returnObjects: true });
+  const testimonials = t("home.testimonials.items", { returnObjects: true });
 
   return (
-    <div dir="rtl" lang="he" className="home-page">
+    <div className="home-page">
       {/* NAV */}
       <SiteNav
-        links={siteNavLinks("home")}
-        cta={{ label: "📅 קבע פגישה", onClick: openCalendly }}
+        links={siteNavLinks("home", t)}
+        cta={{ label: t("nav.ctaMeeting"), onClick: openCalendly }}
       />
 
       {/* HERO */}
       <section className="hero">
         <div className="hero-grid">
           <div className="hero-content">
-            <div className="hero-tag">יועצי משכנתא מורשים</div>
-            <h1>משכנתא <em>חכמה.</em><br />תנאים טובים יותר.</h1>
-            <p>אנחנו מנהלים עבורך את המשא ומתן מול הבנקים, מוצאים את המסלול הטוב ביותר ומחסכים לך עשרות אלפי שקלים לאורך חיי המשכנתא.</p>
+            <div className="eyebrow">{t("home.hero.tag")}</div>
+            <h1>
+              {t("home.hero.titleLead")}<em>{t("home.hero.titleEm")}</em><br />
+              {t("home.hero.titleTail")}
+            </h1>
+            <p>{t("home.hero.lead")}</p>
             <div className="hero-btns">
               <button className="btn-primary" onClick={openCalendly}>
-                📅 קבע פגישה עכשיו ›
+                {t("home.hero.ctaMeeting")}
               </button>
               <a href="#/contact" className="btn-secondary"
                  onClick={(e) => { e.preventDefault(); navTo("contact"); }}>
-                השאר פרטים
+                {t("home.hero.ctaLead")}
               </a>
             </div>
           </div>
@@ -183,7 +180,7 @@ export default function Home() {
 
       {/* STATS */}
       <div className="stats-bar">
-        {STATS.map((s, i) => (
+        {stats.map((s, i) => (
           <div key={i} className="stat-item">
             <span className="stat-num">{s.num}</span>
             <div className="stat-lbl">{s.lbl}</div>
@@ -195,13 +192,21 @@ export default function Home() {
       <section className="services-bg" id="services">
         <div className="container">
           <div className="services-header">
-            <div className="section-tag">השירותים שלנו</div>
-            <h2 className="section-title">הכל תחת קורת גג אחת</h2>
-            <p className="section-sub">ליווי מקצועי מלא — מהמשכנתא הראשונה שלך ועד מיחזור שיחסוך לך כסף רב.</p>
+            <div className="eyebrow">{t("home.services.tag")}</div>
+            <h2 className="section-title">{t("home.services.title")}</h2>
+            <p className="section-sub">{t("home.services.sub")}</p>
           </div>
-          <div className="services-grid">
-            {SERVICES.map((s, i) => <ServiceCard key={i} {...s} />)}
-          </div>
+          {/* Carousel only where vertical space is tight. On desktop all six
+              cards fit, and autoplay would scroll copy away mid-sentence. */}
+          {narrow ? (
+            <Carousel ariaLabel={t("home.services.title")} delay={7000}>
+              {services.map((s, i) => <ServiceCard key={i} {...s} />)}
+            </Carousel>
+          ) : (
+            <div className="services-grid">
+              {services.map((s, i) => <ServiceCard key={i} {...s} />)}
+            </div>
+          )}
         </div>
       </section>
 
@@ -210,20 +215,22 @@ export default function Home() {
         <div className="container">
           <div className="why-grid">
             <div>
-              <div className="section-tag">למה משכנתאPRO?</div>
-              <h2 className="section-title">אנחנו עובדים<br />בשבילך, לא לבנק</h2>
-              <p className="section-sub">יועץ משכנתא עצמאי פועל אך ורק לטובתך, בניגוד לפקיד הבנק שמחויב לאינטרסים של המוסד שלו.</p>
+              <div className="eyebrow">{t("home.why.tag")}</div>
+              <h2 className="section-title">
+                {t("home.why.titleLine1")}<br />{t("home.why.titleLine2")}
+              </h2>
+              <p className="section-sub">{t("home.why.sub")}</p>
               <div className="why-list">
-                {WHY_US.map((w, i) => <WhyItem key={i} {...w} />)}
+                {whyUs.map((w, i) => <WhyItem key={i} {...w} />)}
               </div>
             </div>
             <div className="why-visual">
               <div className="rate-display">
                 <div className="rate">4.2%</div>
-                <div className="rate-lbl">ריבית ממוצעת שהשגנו ללקוחות ברבעון האחרון</div>
+                <div className="rate-lbl">{t("home.why.rateLabel")}</div>
               </div>
               <div className="rate-banks">
-                {BANK_RATES.map((b, i) => (
+                {bankRates.map((b, i) => (
                   <div key={i} className="rate-bank-item">
                     <span className="bank-name">{b.name}</span>
                     <span className="bank-rate">{b.rate}</span>
@@ -231,7 +238,7 @@ export default function Home() {
                 ))}
               </div>
               <p style={{color:"rgba(255,255,255,0.35)",fontSize:11,textAlign:"center",marginTop:12}}>
-                *הנתונים למטרות המחשה בלבד
+                {t("home.why.disclaimer")}
               </p>
             </div>
           </div>
@@ -242,16 +249,14 @@ export default function Home() {
       <section className="process-bg" id="process">
         <div className="container">
           <div className="process-header">
-            <div className="section-tag" style={{background:"rgba(201,168,76,0.12)",color:"var(--gold)"}}>
-              התהליך שלנו
-            </div>
-            <h2 className="section-title">ארבעה שלבים פשוטים</h2>
+            <div className="eyebrow">{t("home.process.tag")}</div>
+            <h2 className="section-title">{t("home.process.title")}</h2>
             <p className="section-sub" style={{color:"rgba(255,255,255,0.6)",margin:"0 auto",textAlign:"center"}}>
-              מהפגישה הראשונה ועד אישור המשכנתא — אנחנו לצידך בכל שלב.
+              {t("home.process.sub")}
             </p>
           </div>
           <div className="process-steps">
-            {PROCESS.map((p, i) => <ProcessStep key={i} {...p} />)}
+            {process.map((p, i) => <ProcessStep key={i} num={i + 1} {...p} />)}
           </div>
         </div>
       </section>
@@ -260,12 +265,21 @@ export default function Home() {
       <section className="testimonials-bg" id="testimonials">
         <div className="container">
           <div className="testimonials-header">
-            <div className="section-tag">מה אומרים עלינו</div>
-            <h2 className="section-title">הלקוחות שלנו מדברים</h2>
+            <div className="eyebrow">{t("home.testimonials.tag")}</div>
+            <h2 className="section-title">{t("home.testimonials.title")}</h2>
           </div>
-          <div className="testimonials-grid">
-            {TESTIMONIALS.map((t, i) => <TestimonialCard key={i} {...t} />)}
-          </div>
+          {/* Only 3 of these, so a desktop carousel would have nothing to
+              scroll to — it's worth it on mobile purely to cut the stack height.
+              Revisit the desktop case if the count grows past a full row. */}
+          {narrow ? (
+            <Carousel ariaLabel={t("home.testimonials.title")} delay={8000}>
+              {testimonials.map((tm, i) => <TestimonialCard key={i} {...tm} />)}
+            </Carousel>
+          ) : (
+            <div className="testimonials-grid">
+              {testimonials.map((tm, i) => <TestimonialCard key={i} {...tm} />)}
+            </div>
+          )}
         </div>
       </section>
 

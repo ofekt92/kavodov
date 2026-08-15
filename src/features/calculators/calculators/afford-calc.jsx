@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { fmt } from "../utils";
 import { Field } from "../ui/field";
 import { RangeField } from "../ui/range-field";
@@ -6,8 +7,10 @@ import { Metric } from "../ui/metric";
 import { ResultHero } from "../ui/result-hero";
 import { TipBox } from "../ui/tip-box";
 import { CalcCard } from "../ui/calc-card";
+import { MoneyInput } from "../../../components/money-input";
 
 export function AffordCalc() {
+  const { t } = useTranslation();
   const [inc1,   setInc1]   = useState(12000);
   const [inc2,   setInc2]   = useState(9000);
   const [oblig,  setOblig]  = useState(2000);
@@ -29,37 +32,37 @@ export function AffordCalc() {
 
   return (
     <CalcCard
-      icon="💰" title="מחשבון כושר השתכרות"
-      subtitle="כמה משכנתא אתה יכול לקחת לפי ההכנסה שלך?"
+      icon="💰" title={t("calculators.afford.title")}
+      subtitle={t("calculators.afford.subtitle")}
       inputs={<>
-        <Field label="הכנסה חודשית נטו — מבקש 1 ₪">
-          <input type="number" value={inc1} onChange={e => setInc1(+e.target.value)} />
+        <Field label={t("calculators.afford.income1")}>
+          <MoneyInput value={inc1} onChange={setInc1} />
         </Field>
-        <Field label="הכנסה חודשית נטו — מבקש 2 ₪ (אם קיים)">
-          <input type="number" value={inc2} onChange={e => setInc2(+e.target.value)} />
+        <Field label={t("calculators.afford.income2")}>
+          <MoneyInput value={inc2} onChange={setInc2} />
         </Field>
-        <Field label="התחייבויות קיימות (הלוואות, ליסינג וכו') ₪/חודש">
-          <input type="number" value={oblig} onChange={e => setOblig(+e.target.value)} />
+        <Field label={t("calculators.afford.obligations")}>
+          <MoneyInput value={oblig} onChange={setOblig} />
         </Field>
-        <Field label="הון עצמי זמין ₪">
-          <input type="number" value={equity} onChange={e => setEquity(+e.target.value)} />
+        <Field label={t("calculators.afford.equity")}>
+          <MoneyInput value={equity} onChange={setEquity} />
         </Field>
-        <RangeField label="תקופת משכנתא רצויה (שנים)" min={10} max={30} value={years}
-          onChange={setYears} display={`${years} שנ׳`} />
-        <RangeField label="ריבית ממוצעת צפויה (%)" min={10} max={100} value={rate}
+        <RangeField label={t("calculators.afford.term")} min={10} max={30} value={years}
+          onChange={setYears} display={t("calculators.common.yearsShort", { years })} />
+        <RangeField label={t("calculators.afford.rate")} min={10} max={100} value={rate}
           onChange={setRate} display={`${(rate/10).toFixed(1)}%`} />
       </>}
       outputs={<>
-        <ResultHero label="משכנתא מקסימלית מומלצת" value={fmt(res.maxLoan)}
-          sub={`לפי כלל 30% מההכנסה הפנויה של ${fmt(res.freeInc)}/חודש`} />
+        <ResultHero label={t("calculators.afford.resultLabel")} value={fmt(res.maxLoan)}
+          sub={t("calculators.afford.resultSub", { amount: fmt(res.freeInc) })} />
         <div className="output-grid">
-          <Metric label="הכנסה פנויה"            value={fmt(res.freeInc)} />
-          <Metric label="תשלום חודשי מקסימלי"    value={fmt(res.maxPay)} color="gold" />
-          <Metric label="מחיר נכס מקסימלי"       value={fmt(res.maxPrice)} />
-          <Metric label="אחוז מימון"              value={`${res.ltv}%`} color="green" />
+          <Metric label={t("calculators.afford.freeIncome")} value={fmt(res.freeInc)} />
+          <Metric label={t("calculators.afford.maxPayment")} value={fmt(res.maxPay)} color="gold" />
+          <Metric label={t("calculators.afford.maxPrice")}   value={fmt(res.maxPrice)} />
+          <Metric label={t("calculators.common.ltv")}        value={`${res.ltv}%`} color="green" />
         </div>
         <TipBox>
-          <strong>כלל אצבע:</strong> הבנקים בישראל מאפשרים החזר חודשי של עד 40% מההכנסה נטו, אך מומלץ לשמור על 30% לביטחון פיננסי.
+          <strong>{t("calculators.afford.tipLabel")}</strong> {t("calculators.afford.tip")}
         </TipBox>
       </>}
     />

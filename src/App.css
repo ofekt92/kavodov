@@ -13,6 +13,11 @@
   --navy2: #152d54;
   --gold: #c9a84c;
   --gold2: #e8c870;
+  /* Text-safe gold. --gold is a decoration colour only: at 2.1:1 on white it
+     fails WCAG AA for anything you actually have to read. Held down to this
+     lightness by --cream2, the darkest light ground on the site (4.9:1); the
+     green is pulled out so it reads bronze rather than olive. */
+  --gold-ink: #8a5c12;
   --cream: #f8f5ef;
   --cream2: #f0ebe0;
   --white: #fff;
@@ -28,11 +33,76 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* ── EYEBROW ──
+   The one small-label style on the site. Every section and hero kicker uses it;
+   it replaced three near-identical pill variants (.hero-tag, .page-hero-tag,
+   .section-tag). Only the ink changes between light and dark ground — the rule
+   stays bright gold everywhere.
+
+   Not for .badge-save / .badge-cost: those encode a value's meaning rather than
+   labelling a section, so they stay pills. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold-ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* Tight to the heading it introduces — the two are one block. */
+  margin-bottom: 0.6rem;
+}
+/* Rules only where the label is centred and they can bracket it symmetrically.
+   A single leading rule on a start-aligned label has nothing to balance
+   against and just reads as a stray dash. */
+.page-hero .eyebrow::before,
+.page-hero .eyebrow::after,
+.services-header .eyebrow::before,
+.services-header .eyebrow::after,
+.process-header .eyebrow::before,
+.process-header .eyebrow::after,
+.testimonials-header .eyebrow::before,
+.testimonials-header .eyebrow::after {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to var(--fade-dir), var(--gold2), var(--gold));
+}
+/* On navy the dark ink is unreadable; the bright gold is 9.6:1 there. */
+.hero .eyebrow,
+.page-hero .eyebrow,
+.process-bg .eyebrow {
+  color: var(--gold2);
+}
+.hero .eyebrow,
+.page-hero .eyebrow {
+  margin-bottom: 0.9rem;
+}
+/* Wide tracking is an uppercase-Latin device: it works because the caps give it
+   something to space. Hebrew has no case, so the same tracking just loosens the
+   word into something harder to read. */
+:root[dir="rtl"] .eyebrow {
+  letter-spacing: 0.04em;
+}
+
+/* Direction is driven by <html dir>, set from the active language in src/i18n.
+   Layout uses logical properties; these two vars cover the handful of places
+   (transforms, gradients) that have no logical equivalent. */
+:root[dir="rtl"] {
+  --dir: 1;
+  --fade-dir: left;
+}
+:root[dir="ltr"] {
+  --dir: -1;
+  --fade-dir: right;
+}
 body {
   font-family: "Heebo", sans-serif;
   background: var(--cream);
   color: var(--text);
-  direction: rtl;
 }
 
 /* ── NAV ── */
@@ -161,20 +231,9 @@ nav {
     transparent 70%
   );
 }
-.page-hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(201, 168, 76, 0.14);
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  color: var(--gold);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  padding: 5px 14px;
-  border-radius: 99px;
-  margin-bottom: 1.2rem;
+.page-hero .eyebrow {
   position: relative;
+  z-index: 1;
 }
 .page-hero h1 {
   font-size: clamp(30px, 5vw, 50px);
@@ -210,11 +269,19 @@ nav {
   padding: 0 2rem;
   display: flex;
   gap: 0;
+  /* still scrollable on narrow screens, just without the scrollbar chrome —
+     the English labels overrun the row by a few px and that was enough to
+     paint a full-width bar under the tabs */
   overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.tool-tabs::-webkit-scrollbar {
+  display: none;
 }
 .tool-tab {
   white-space: nowrap;
-  padding: 14px 22px;
+  padding: 14px 18px;
   font-size: 14px;
   font-weight: 500;
   color: var(--text2);
@@ -298,7 +365,7 @@ nav {
 .calc-outputs {
   padding: 2rem;
   background: var(--cream);
-  border-right: 1px solid rgba(13, 31, 60, 0.07);
+  border-inline-start: 1px solid rgba(13, 31, 60, 0.07);
 }
 
 /* ── FULL CARD ── */
@@ -352,6 +419,72 @@ nav {
   border-color: var(--gold);
   background: var(--white);
 }
+/* ── SEGMENTED CONTROL ── */
+.segmented {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--cream);
+  border: 1.5px solid rgba(13, 31, 60, 0.12);
+  border-radius: 10px;
+}
+.segmented-option {
+  flex: 1;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text2);
+  font-family: "Heebo", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.segmented-option:hover:not(.is-active) {
+  background: rgba(13, 31, 60, 0.05);
+  color: var(--text);
+}
+.segmented-option.is-active {
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+}
+.segmented:focus-within {
+  border-color: var(--gold);
+}
+.segmented-option:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+/* ── MONEY INPUT ── */
+.money-input {
+  position: relative;
+  display: block;
+}
+/* [type] keeps this above the later .calc-field/.form-field input rules,
+   which would otherwise reset the padding the ₪ needs */
+.money-input input[type="text"] {
+  /* room for the ₪; the field itself is forced LTR so the sign sits left */
+  padding-left: 32px;
+  text-align: left;
+  direction: ltr;
+}
+.money-adornment {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: var(--text3);
+  pointer-events: none;
+}
+.money-input input:focus + .money-adornment,
+.money-input:focus-within .money-adornment {
+  color: var(--gold);
+}
+
 .field-hint {
   font-size: 11px;
   color: var(--text3);
@@ -467,7 +600,7 @@ nav {
   background: var(--navy);
   color: rgba(255, 255, 255, 0.8);
   padding: 8px 12px;
-  text-align: right;
+  text-align: start;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -475,7 +608,7 @@ nav {
   padding: 7px 12px;
   border-bottom: 0.5px solid rgba(13, 31, 60, 0.06);
   color: var(--text2);
-  text-align: right;
+  text-align: start;
 }
 .amort-table tr:hover td {
   background: var(--cream);
@@ -493,7 +626,7 @@ nav {
   background: var(--navy);
   color: rgba(255, 255, 255, 0.8);
   padding: 12px 16px;
-  text-align: right;
+  text-align: start;
   font-weight: 500;
 }
 .compare-table td {
@@ -622,6 +755,13 @@ footer {
   text-align: center;
   border-top: 1px solid rgba(201, 168, 76, 0.15);
 }
+.footer-coin {
+  display: block;
+  width: 90px;
+  height: auto;
+  margin: 0 auto 1rem;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+}
 .footer-logo {
   font-size: 18px;
   font-weight: 900;
@@ -698,7 +838,7 @@ footer p {
     padding: 11px 1.25rem;
     font-size: 15px;
     line-height: 1.4;
-    text-align: right;
+    text-align: start;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   }
   .nav-links a:last-child {
@@ -709,8 +849,8 @@ footer p {
   .nav-links a.active::after {
     top: 4px;
     bottom: 4px;
-    right: 0;
-    left: auto;
+    inset-inline-start: 0;
+    inset-inline-end: auto;
     width: 3px;
     height: auto;
   }
@@ -720,7 +860,7 @@ footer p {
     grid-template-columns: 1fr;
   }
   .calc-outputs {
-    border-right: none;
+    border-inline-start: none;
     border-top: 1px solid rgba(13, 31, 60, 0.07);
   }
   .output-grid {
@@ -767,10 +907,10 @@ footer p {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
+    inset-inline-end: 0;
     width: 36px;
     pointer-events: none;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0), var(--white));
+    background: linear-gradient(to var(--fade-dir, left), rgba(255, 255, 255, 0), var(--white));
   }
 
   /* 16px minimum stops iOS Safari auto-zooming on focus */
@@ -847,6 +987,19 @@ footer p {
     transparent 70%
   );
 }
+/* coin watermark — decorative, sits behind .hero-grid (z-index 1) */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  inset-inline-start: -7%;
+  width: min(480px, 44vw);
+  aspect-ratio: 560 / 549;
+  transform: translateY(-50%) rotate(-6deg);
+  background: url("/coin.webp") center / contain no-repeat;
+  opacity: 0.07;
+  pointer-events: none;
+}
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -856,26 +1009,6 @@ footer p {
   align-items: center;
   position: relative;
   z-index: 1;
-}
-.hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(201, 168, 76, 0.15);
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  color: var(--gold);
-  font-size: 13px;
-  font-weight: 500;
-  padding: 6px 14px;
-  border-radius: 99px;
-  margin-bottom: 1.5rem;
-}
-.hero-tag::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  background: var(--gold);
-  border-radius: 50%;
 }
 .hero h1 {
   font-size: clamp(36px, 5vw, 58px);
@@ -981,6 +1114,9 @@ footer p {
 .calc-field select:focus {
   border-color: var(--gold);
 }
+.calc-field .money-adornment {
+  color: rgba(255, 255, 255, 0.5);
+}
 .calc-field select option {
   background: var(--navy2);
   color: #fff;
@@ -1035,10 +1171,10 @@ footer p {
 .stat-item {
   text-align: center;
   padding: 0 3rem;
-  border-left: 1px solid rgba(201, 168, 76, 0.2);
+  border-inline-end: 1px solid rgba(201, 168, 76, 0.2);
 }
 .stat-item:last-child {
-  border-left: none;
+  border-inline-end: none;
 }
 .stat-num {
   font-size: 36px;
@@ -1059,19 +1195,6 @@ footer p {
 .home-page .container {
   max-width: 1100px;
   margin: 0 auto;
-}
-.home-page .section-tag {
-  display: inline-block;
-  background: rgba(201, 168, 76, 0.12);
-  border: 1px solid rgba(201, 168, 76, 0.25);
-  color: var(--gold);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 5px 14px;
-  border-radius: 99px;
-  margin-bottom: 1rem;
 }
 .home-page .section-title {
   font-size: clamp(28px, 4vw, 42px);
@@ -1103,6 +1226,101 @@ footer p {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
+/* ── CAROUSEL (embla) ── */
+.carousel-viewport {
+  overflow: hidden;
+}
+.carousel-track {
+  display: flex;
+  align-items: stretch;
+  /* embla's loop offsets are computed from slide widths, so the gutter has to
+     live inside the slide (padding) — a flex `gap` desyncs the wrapped slide */
+  margin-inline-start: -1.5rem;
+  /* leave room for the hover lift + shadow so neither gets clipped */
+  padding: 6px 0 14px;
+}
+.carousel-slide {
+  flex: 0 0 33.3333%;
+  min-width: 0;
+  display: flex;
+  padding-inline-start: 1.5rem;
+}
+.carousel-slide > * {
+  width: 100%;
+}
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+.carousel-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 31, 60, 0.15);
+  background: #fff;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+}
+.carousel-arrow:hover:not(:disabled) {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
+.carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+}
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(13, 31, 60, 0.2);
+  cursor: pointer;
+  transition: background 0.2s, width 0.2s;
+}
+.carousel-dot.is-active {
+  width: 22px;
+  border-radius: 4px;
+  background: var(--gold);
+}
+@media (max-width: 900px) {
+  .carousel-slide {
+    flex-basis: 50%;
+  }
+}
+@media (max-width: 620px) {
+  /* symmetric gutter so the centered slide's card is actually centered
+     (a start-only gutter offsets it by half the gap) */
+  .carousel-track {
+    margin-inline: -0.75rem;
+  }
+  .carousel-slide {
+    flex-basis: 84%;
+    padding-inline: 0.75rem;
+  }
+  /* bigger tap targets on touch */
+  .carousel-arrow {
+    width: 44px;
+    height: 44px;
+  }
+  .carousel-controls {
+    gap: 0.75rem;
+  }
+}
+
 .service-card {
   background: var(--cream);
   border: 1px solid rgba(13, 31, 60, 0.08);
@@ -1142,7 +1360,12 @@ footer p {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.25rem;
-  font-size: 22px;
+  color: var(--gold);
+  transition: background 0.3s, color 0.3s;
+}
+.service-card:hover .service-icon {
+  background: var(--gold);
+  color: var(--navy);
 }
 .service-card h3 {
   font-size: 20px;
@@ -1184,7 +1407,7 @@ footer p {
 }
 .why-item:hover {
   box-shadow: 0 8px 32px rgba(13, 31, 60, 0.08);
-  transform: translateX(-4px);
+  transform: translateX(calc(-4px * var(--dir, 1)));
 }
 .why-check {
   width: 36px;
@@ -1301,6 +1524,28 @@ footer p {
 .process-step:hover {
   background: rgba(201, 168, 76, 0.08);
   border-color: rgba(201, 168, 76, 0.25);
+  transform: translateY(-3px);
+}
+/* per-character gold sweep on title, in reading order */
+.sweep-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.sweep-char {
+  transition: color 0.18s ease, text-shadow 0.18s ease;
+}
+.process-step:hover h4 .sweep-char {
+  color: var(--gold);
+  transition-delay: calc(var(--p) * 260ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .process-step:hover {
+    transform: none;
+  }
+  .process-step:hover h4 .sweep-char,
+  .process-step:hover p .sweep-char {
+    transition-delay: 0s;
+  }
 }
 .step-num {
   width: 48px;
@@ -1326,6 +1571,13 @@ footer p {
   color: rgba(255, 255, 255, 0.55);
   font-size: 14px;
   line-height: 1.65;
+}
+/* desc: same left-to-right sweep, fades to white + fake-bold (text-shadow, no reflow) */
+.process-step:hover p .sweep-char {
+  color: #fff;
+  text-shadow: 0 0 0.4px currentColor, 0 0 0.4px currentColor;
+  transition-duration: 0.1s;
+  transition-delay: calc(var(--p) * 200ms);
 }
 
 /* TESTIMONIALS */
@@ -1684,7 +1936,7 @@ footer p {
   }
   .stat-item {
     padding: 0 0.5rem;
-    border-left: 1px solid rgba(201, 168, 76, 0.15);
+    border-inline-end: 1px solid rgba(201, 168, 76, 0.15);
   }
   .stat-num {
     font-size: 21px;
@@ -1903,4 +2155,55 @@ footer p {
 /* Calendly popup overlay z-index fix (above nav) */
 .calendly-overlay {
   z-index: 9999 !important;
+}
+
+
+/* ── LANGUAGE SWITCH ── */
+.nav-end {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 8px;
+  padding: 7px 11px;
+  font-family: "Heebo", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.8);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.lang-switch:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201, 168, 76, 0.1);
+}
+.lang-globe {
+  font-size: 12px;
+}
+/* One instance sits in the bar, one in the mobile panel — only one shows */
+.lang-switch-panel {
+  display: none;
+}
+@media (max-width: 768px) {
+  .nav-end {
+    order: 2;
+    gap: 0.5rem;
+  }
+  /* the bar runs out of room next to the CTA and the hamburger */
+  .lang-switch-bar {
+    display: none;
+  }
+  .lang-switch-panel {
+    display: inline-flex;
+    align-self: flex-start;
+    margin: 0.75rem 1.25rem 1rem;
+  }
 }

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { fmt, pmt, navTo } from "../utils";
 import { Field } from "../ui/field";
 import { RangeField } from "../ui/range-field";
@@ -6,8 +7,10 @@ import { Metric } from "../ui/metric";
 import { ResultHero } from "../ui/result-hero";
 import { TipBox } from "../ui/tip-box";
 import { CalcCard } from "../ui/calc-card";
+import { MoneyInput } from "../../../components/money-input";
 
 export function MonthlyCalc() {
+  const { t } = useTranslation();
   const [loan,    setLoan]   = useState(1200000);
   const [years,   setYears]  = useState(25);
   const [rate,    setRate]   = useState(45);   // ×0.1 = %
@@ -26,51 +29,45 @@ export function MonthlyCalc() {
     return { m, tot, interest, price, ltv, pct };
   }, [loan, years, rate, equity]);
 
-  const tips = {
-    fix:   "ריבית קבועה צמודה מעניקה ביטחון לתכנון — אך ריבית פריים עשויה להיות זולה יותר לטווח הקצר.",
-    prime: "ריבית פריים מושפעת מהחלטות בנק ישראל — מתאים למי שיכול להתמודד עם שינויים בהחזר.",
-    var:   "ריבית משתנה מתאימה לטווח קצר — מומלץ לחשב תרחיש עלייה של 2% בריבית.",
-  };
-
   return (
     <CalcCard
-      icon="🏠" title="מחשבון תשלום חודשי"
-      subtitle="חשב את ההחזר החודשי הצפוי על פי סכום, ריבית ותקופה"
+      icon="🏠" title={t("calculators.monthly.title")}
+      subtitle={t("calculators.monthly.subtitle")}
       inputs={<>
-        <Field label="סכום המשכנתא ₪">
-          <input type="number" value={loan} min={0} step={10000}
-            onChange={e => setLoan(+e.target.value)} />
+        <Field label={t("calculators.monthly.amount")}>
+          <MoneyInput value={loan} onChange={setLoan} />
         </Field>
-        <RangeField label="תקופת המשכנתא (שנים)" min={5} max={30} value={years}
-          onChange={setYears} display={`${years} שנ׳`} />
-        <RangeField label="ריבית שנתית (%)" min={10} max={120} value={rate}
+        <RangeField label={t("calculators.monthly.term")} min={5} max={30} value={years}
+          onChange={setYears} display={t("calculators.common.yearsShort", { years })} />
+        <RangeField label={t("calculators.monthly.rate")} min={10} max={120} value={rate}
           onChange={setRate} display={`${(rate/10).toFixed(1)}%`} />
-        <Field label="הון עצמי ₪">
-          <input type="number" value={equity} min={0} step={10000}
-            onChange={e => setEquity(+e.target.value)} />
+        <Field label={t("calculators.monthly.equity")}>
+          <MoneyInput value={equity} onChange={setEquity} />
         </Field>
-        <Field label="סוג הריבית">
+        <Field label={t("calculators.monthly.rateType")}>
           <select value={type} onChange={e => setType(e.target.value)}>
-            <option value="fix">קבועה צמודה</option>
-            <option value="prime">פריים</option>
-            <option value="var">משתנה כל 5 שנים</option>
+            <option value="fix">{t("calculators.monthly.typeFix")}</option>
+            <option value="prime">{t("calculators.monthly.typePrime")}</option>
+            <option value="var">{t("calculators.monthly.typeVar")}</option>
           </select>
         </Field>
         <button className="calc-btn gold-btn"
           onClick={() => navTo("contact")}>
-          קבל הצעה אישית ›
+          {t("calculators.common.personalOffer")}
         </button>
       </>}
       outputs={<>
-        <ResultHero label="תשלום חודשי" value={fmt(res.m)}
-          sub={`כ-${res.pct}% מהכנסה נטו של ${fmt(20000)}`} />
+        <ResultHero label={t("calculators.common.monthlyPayment")} value={fmt(res.m)}
+          sub={t("calculators.monthly.resultSub", { pct: res.pct, income: fmt(20000) })} />
         <div className="output-grid">
-          <Metric label="סה״כ החזר"   value={fmt(res.tot)} />
-          <Metric label="סה״כ ריבית"  value={fmt(res.interest)} color="red" />
-          <Metric label="עלות הנכס"   value={fmt(res.price)} />
-          <Metric label="אחוז מימון"  value={`${res.ltv}%`} color="gold" />
+          <Metric label={t("calculators.common.totalPaid")}     value={fmt(res.tot)} />
+          <Metric label={t("calculators.common.totalInterest")} value={fmt(res.interest)} color="red" />
+          <Metric label={t("calculators.monthly.propertyCost")} value={fmt(res.price)} />
+          <Metric label={t("calculators.common.ltv")}           value={`${res.ltv}%`} color="gold" />
         </div>
-        <TipBox><strong>טיפ:</strong> {tips[type]}</TipBox>
+        <TipBox>
+          <strong>{t("calculators.monthly.tipLabel")}</strong> {t(`calculators.monthly.tips.${type}`)}
+        </TipBox>
       </>}
     />
   );

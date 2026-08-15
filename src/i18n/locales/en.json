@@ -1,0 +1,420 @@
+{
+  "brand": {
+    "name": "Kavodov",
+    "suffix": ""
+  },
+  "meta": {
+    "title": "Calculators & Tools | Kavodov"
+  },
+  "language": {
+    "label": "Language",
+    "he": "עברית",
+    "en": "English",
+    "switchTo": "מעבר לעברית"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "process": "Process",
+    "calculators": "Calculators",
+    "contact": "Contact",
+    "menu": "Menu",
+    "ctaMeeting": "📅 Book a meeting",
+    "ctaFree": "Free consultation"
+  },
+  "footer": {
+    "about": "About",
+    "services": "Services",
+    "process": "Process",
+    "testimonials": "Testimonials",
+    "contact": "Contact",
+    "calculators": "Calculators",
+    "privacy": "Privacy policy",
+    "license": "Kavodov — Licensed mortgage advisors | Financial advisory license no. 000000",
+    "copyright": "© 2025 Kavodov | All rights reserved",
+    "disclaimer": "This site provides general information only and does not constitute binding financial advice",
+    "calcDisclaimer": "These calculators are for preliminary estimates only and do not constitute binding financial advice"
+  },
+  "home": {
+    "hero": {
+      "tag": "Licensed mortgage advisors",
+      "titleLead": "A smarter ",
+      "titleEm": "mortgage.",
+      "titleTail": "Better terms.",
+      "lead": "We negotiate with the banks on your behalf, find the best track for you, and save you tens of thousands of shekels over the life of your mortgage.",
+      "ctaMeeting": "📅 Book a meeting ›",
+      "ctaLead": "Leave your details"
+    },
+    "heroCalc": {
+      "title": "Monthly payment calculator",
+      "amount": "Mortgage amount (₪)",
+      "term": "Term (years)",
+      "termOption": "{{years}} years",
+      "rate": "Annual interest rate (%)",
+      "resultLabel": "Estimated monthly payment",
+      "cta": "Get a personal quote ›"
+    },
+    "stats": [
+      {
+        "num": "+3,200",
+        "lbl": "Happy clients"
+      },
+      {
+        "num": "₪480M",
+        "lbl": "Mortgages managed"
+      },
+      {
+        "num": "12+",
+        "lbl": "Years of experience"
+      },
+      {
+        "num": "97%",
+        "lbl": "Client satisfaction"
+      }
+    ],
+    "services": {
+      "tag": "Our services",
+      "title": "Everything under one roof",
+      "sub": "Full professional guidance — from your first mortgage to a refinance that saves you real money.",
+      "items": [
+        {
+          "id": "first-home",
+          "title": "First-home mortgage",
+          "desc": "Full guidance for first-time buyers — we explain every track, build an optimal mix and stay with you through submission."
+        },
+        {
+          "id": "refinance",
+          "title": "Mortgage refinancing",
+          "desc": "A free check on whether refinancing pays off. If it does, we run the whole process and secure you lower rates."
+        },
+        {
+          "id": "self-build",
+          "title": "Self-build mortgage",
+          "desc": "Tailored advice for self-build and development projects, including managing the release stages with the bank."
+        },
+        {
+          "id": "better-terms",
+          "title": "Better-terms review",
+          "desc": "We analyse your existing mortgage and find ways to cut your monthly payment starting next month."
+        },
+        {
+          "id": "investment",
+          "title": "Investment property",
+          "desc": "Focused advice for investors — the right leverage, a smart financing structure and an exit strategy."
+        },
+        {
+          "id": "representation",
+          "title": "Representation with the bank",
+          "desc": "We run the negotiation for you — so you get the best terms available."
+        }
+      ]
+    },
+    "why": {
+      "tag": "Why Kavodov?",
+      "titleLine1": "We work for you,",
+      "titleLine2": "not for the bank",
+      "sub": "An independent mortgage advisor acts solely in your interest, unlike a bank clerk who is bound to their institution's interests.",
+      "items": [
+        {
+          "icon": "✅",
+          "title": "Independent advice",
+          "desc": "We are not tied to any bank — we work with all of them and secure the lowest rate available."
+        },
+        {
+          "icon": "⚡",
+          "title": "Saves time and money",
+          "desc": "We handle the paperwork, the coordination and the negotiation — you just sign."
+        },
+        {
+          "icon": "🔒",
+          "title": "Full transparency",
+          "desc": "You'll know every cost, comparison and alternative before you sign a single document."
+        },
+        {
+          "icon": "📞",
+          "title": "Support all the way",
+          "desc": "From the first meeting to handing over the keys — we're available for every question."
+        }
+      ],
+      "rateLabel": "Average rate we secured for clients last quarter",
+      "banks": [
+        {
+          "name": "Bank Hapoalim",
+          "rate": "4.15%"
+        },
+        {
+          "name": "Bank Leumi",
+          "rate": "4.22%"
+        },
+        {
+          "name": "Mizrahi Tefahot",
+          "rate": "4.19%"
+        },
+        {
+          "name": "Discount Bank",
+          "rate": "4.31%"
+        }
+      ],
+      "disclaimer": "*Figures shown for illustration only"
+    },
+    "process": {
+      "tag": "Our process",
+      "title": "Four simple steps",
+      "sub": "From the first meeting to mortgage approval — we're beside you at every stage.",
+      "steps": [
+        {
+          "title": "Initial consultation",
+          "desc": "A free, no-obligation call — we'll understand your needs and check your borrowing capacity."
+        },
+        {
+          "title": "Building an optimal mix",
+          "desc": "We tailor the combination of tracks that best fits your needs and financial situation."
+        },
+        {
+          "title": "Negotiating with the banks",
+          "desc": "We submit to several banks in parallel and drive the rate down to the lowest available."
+        },
+        {
+          "title": "Signing and closing",
+          "desc": "We accompany you to signing, make sure every document is in order — and celebrate with you!"
+        }
+      ]
+    },
+    "testimonials": {
+      "tag": "What people say",
+      "title": "Our clients speak",
+      "items": [
+        {
+          "initials": "YC",
+          "name": "Yossi & Dana Cohen",
+          "location": "Tel Aviv • Mortgage refinance",
+          "text": "We saved over ₪120,000 over the life of the mortgage. The Kavodov team was available for every question and handled everything with real professionalism. Highly recommended!"
+        },
+        {
+          "initials": "SL",
+          "name": "Shira & Micha Levy",
+          "location": "Rehovot • First home",
+          "text": "As first-time buyers we understood nothing — they explained everything patiently, built us an excellent mix and submitted to three banks. We got terms we never thought we'd reach."
+        },
+        {
+          "initials": "AB",
+          "name": "Avi Berkovitz",
+          "location": "Petah Tikva • Investment property",
+          "text": "I wanted to invest in real estate but had no idea where to start with the financing. The advice from Kavodov was precise and fast, and in the end I closed an excellent deal."
+        }
+      ]
+    }
+  },
+  "contactPage": {
+    "heroTag": "Free initial consultation",
+    "heroTitleLead": "Ready to ",
+    "heroTitleEm": "get started?",
+    "heroLead": "Leave your details and a licensed advisor will get back to you within an hour during business hours — free and with no obligation.",
+    "sectionTitle": "We're happy to help.",
+    "sectionIntro": "Pick whatever suits you — phone, email, or booking a slot in our calendar."
+  },
+  "contact": {
+    "tag": "Contact us",
+    "defaultTitle": "Ready to start? We're happy to help.",
+    "defaultIntro": "Leave your details and a licensed advisor will get back to you within an hour during business hours — free and with no obligation.",
+    "calendlyTitle": "Book a meeting right now",
+    "calendlyDesc": "Pick a date and time that works for you — and get instant confirmation",
+    "calendlyBtn": "Book a meeting ›",
+    "phoneLabel": "Phone",
+    "phoneValue": "03-000-0000",
+    "emailLabel": "Email",
+    "emailValue": "info@mashpro.co.il",
+    "hoursLabel": "Opening hours",
+    "hoursValue": "Sun–Thu 08:00–19:00 | Fri 08:00–13:00",
+    "addressLabel": "Address",
+    "addressValue": "1 Rothschild Blvd, Tel Aviv",
+    "toastSuccess": "✓ Message sent! We'll get back to you within an hour",
+    "toastError": "✗ Sending failed. Try again or call us instead"
+  },
+  "form": {
+    "title": "Leave your details for a free consultation",
+    "firstName": "First name *",
+    "firstNamePlaceholder": "Israel",
+    "lastName": "Last name *",
+    "lastNamePlaceholder": "Israeli",
+    "phone": "Phone *",
+    "phonePlaceholder": "050-0000000",
+    "email": "Email *",
+    "emailPlaceholder": "your@email.com",
+    "service": "Service type",
+    "serviceOptions": {
+      "first": "First-home mortgage",
+      "refi": "Mortgage refinancing",
+      "selfBuild": "Self-build mortgage",
+      "investment": "Investment property",
+      "improve": "Better-terms review"
+    },
+    "amount": "Requested mortgage amount (₪)",
+    "amountPlaceholder": "1,000,000",
+    "notes": "Additional notes (optional)",
+    "notesPlaceholder": "Tell us more about what you need...",
+    "subject": "New enquiry from the site — {{firstName}} {{lastName}}",
+    "proofClients": "+3,200 clients",
+    "proofSatisfaction": "97% satisfaction",
+    "proofExperience": "12+ years of experience",
+    "submit": "Send enquiry — free consultation ›",
+    "submitting": "Sending...",
+    "errorRequired": "Required field",
+    "errorPhone": "Invalid phone number",
+    "errorEmail": "Invalid email address"
+  },
+  "calculators": {
+    "heroTag": "Free professional tools",
+    "heroTitleLead": "Smart mortgage ",
+    "heroTitleEm": "calculators",
+    "heroTitleTail": "",
+    "heroLead": "Accurate tools to help you make the right financial decisions — before you approach the bank.",
+    "tabs": {
+      "monthly": "Monthly payment",
+      "refi": "Refinance check",
+      "afford": "Borrowing capacity",
+      "amort": "Amortization table",
+      "mix": "Track mix",
+      "compare": "Bank comparison"
+    },
+    "common": {
+      "yearsShort": "{{years}} yrs",
+      "loanAmount": "Mortgage amount ₪",
+      "term": "Term (years)",
+      "annualRate": "Annual rate %",
+      "monthlyPayment": "Monthly payment",
+      "totalPaid": "Total repaid",
+      "totalInterest": "Total interest",
+      "ltv": "LTV",
+      "personalOffer": "Get a personal quote ›"
+    },
+    "monthly": {
+      "title": "Monthly payment calculator",
+      "subtitle": "Calculate your expected monthly payment from amount, rate and term",
+      "amount": "Mortgage amount ₪",
+      "term": "Mortgage term (years)",
+      "rate": "Annual interest rate (%)",
+      "equity": "Down payment ₪",
+      "rateType": "Interest type",
+      "typeFix": "Fixed, index-linked",
+      "typePrime": "Prime",
+      "typeVar": "Variable every 5 years",
+      "resultSub": "About {{pct}}% of a net income of {{income}}",
+      "propertyCost": "Property cost",
+      "tipLabel": "Tip:",
+      "tips": {
+        "fix": "A fixed index-linked rate gives you planning certainty — but the prime rate may be cheaper in the short term.",
+        "prime": "The prime rate follows Bank of Israel decisions — suitable if you can absorb changes in your payment.",
+        "var": "A variable rate suits a short horizon — model a 2% rate increase before you commit."
+      }
+    },
+    "refi": {
+      "title": "Refinance worthwhileness",
+      "subtitle": "Is refinancing worth it? Calculate your expected saving and break-even point",
+      "existingHeading": "Existing mortgage",
+      "balance": "Outstanding principal ₪",
+      "currentRate": "Current rate (%)",
+      "yearsLeft": "Years remaining",
+      "newHeading": "New mortgage after refinancing",
+      "newRate": "New rate (%)",
+      "penalty": "Early repayment fee ₪",
+      "costs": "Refinancing costs (appraisal, legal, etc.) ₪",
+      "recommendation": "Recommendation",
+      "worthy": "Worth refinancing!",
+      "notWorthy": "Not worth it right now",
+      "worthySub": "Total saving: {{amount}}",
+      "notWorthySub": "Refinancing costs exceed the saving",
+      "currentPayment": "Current payment",
+      "newPayment": "New payment",
+      "monthlySaving": "Monthly saving",
+      "totalSaving": "Total saving",
+      "breakeven": "Break-even point",
+      "breakevenValue": "{{months}} months",
+      "breakevenNever": "Not worth it",
+      "breakevenSub": "After this period you're in profit",
+      "cta": "Want us to refinance for you? ›"
+    },
+    "afford": {
+      "title": "Borrowing capacity calculator",
+      "subtitle": "How large a mortgage can you take based on your income?",
+      "income1": "Net monthly income — applicant 1 ₪",
+      "income2": "Net monthly income — applicant 2 ₪ (if any)",
+      "obligations": "Existing obligations (loans, leasing, etc.) ₪/month",
+      "equity": "Available down payment ₪",
+      "term": "Desired mortgage term (years)",
+      "rate": "Expected average rate (%)",
+      "resultLabel": "Recommended maximum mortgage",
+      "resultSub": "Based on the 30% rule applied to disposable income of {{amount}}/month",
+      "freeIncome": "Disposable income",
+      "maxPayment": "Maximum monthly payment",
+      "maxPrice": "Maximum property price",
+      "tipLabel": "Rule of thumb:",
+      "tip": "Israeli banks allow a monthly repayment of up to 40% of net income, but 30% is the safer ceiling for financial resilience."
+    },
+    "amort": {
+      "title": "Amortization table",
+      "subtitle": "Principal and interest breakdown for every month over the life of the mortgage",
+      "frequency": "Display frequency",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "interestShare": "Interest share",
+      "colMonth": "Month",
+      "colYear": "Year",
+      "colPayment": "Payment",
+      "colPrincipal": "Principal",
+      "colInterest": "Interest",
+      "colBalance": "Balance"
+    },
+    "mix": {
+      "title": "Building a track mix",
+      "subtitle": "Model a combination of up to 3 tracks and check the total repayment",
+      "total": "Total mortgage ₪",
+      "tracks": [
+        "🔵 Fixed, index-linked",
+        "🟡 Prime",
+        "🟠 Variable every 5 years"
+      ],
+      "amount": "Amount ₪",
+      "rate": "Rate %",
+      "ratePrime": "Rate % (prime ±)",
+      "years": "Years",
+      "warning": "⚠️ Track total ({{tracks}}) differs from the mortgage total ({{total}})",
+      "combinedLabel": "Combined monthly payment",
+      "combinedSub": "Total repaid across all tracks: {{amount}}",
+      "colTrack": "Track",
+      "colAmount": "Amount",
+      "colRate": "Rate",
+      "colTerm": "Term",
+      "tipLabel": "Expert recommendation:",
+      "tip": "A balanced mix across tracks reduces risk — fixed index-linked combined with prime is the most popular choice in Israel."
+    },
+    "compare": {
+      "title": "Comparing bank offers",
+      "subtitle": "Enter up to 4 offers and see who gives the best terms",
+      "bankCard": "🏦 Bank {{letter}}",
+      "bankLetters": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "bankName": "Bank name",
+      "rate": "Rate %",
+      "banks": [
+        "Bank Hapoalim",
+        "Bank Leumi",
+        "Mizrahi Tefahot",
+        "Discount Bank"
+      ],
+      "colBank": "Bank",
+      "best": "Best offer",
+      "tipLabel": "Professional tip:",
+      "tip": "A 0.25% rate difference on a ₪1M mortgage over 25 years is worth about ₪37,000 over the life of the loan. Worth haggling for!"
+    }
+  },
+  "carousel": {
+    "prev": "Previous",
+    "next": "Next",
+    "goTo": "Go to slide {{n}}"
+  }
+}

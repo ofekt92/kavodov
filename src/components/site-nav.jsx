@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import LanguageSwitch from "./language-switch";
 
 /**
  * Shared site header.
@@ -13,6 +15,7 @@ import { useState, useEffect } from "react";
  */
 export default function SiteNav({ links, cta, onLogoClick }) {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   // Close on Escape, on a click outside the nav, and whenever the viewport
   // grows past the mobile breakpoint
@@ -51,13 +54,13 @@ export default function SiteNav({ links, cta, onLogoClick }) {
         }}
         className="logo"
       >
-        <span className="logo-dot">●</span> משכנתא<span>PRO</span>
+        <span className="logo-dot">●</span> {t("brand.name")}<span>{t("brand.suffix")}</span>
       </a>
 
       <button
         type="button"
         className={`nav-toggle ${open ? "open" : ""}`}
-        aria-label="תפריט"
+        aria-label={t("nav.menu")}
         aria-expanded={open}
         aria-controls="nav-menu"
         onClick={() => setOpen(o => !o)}
@@ -76,11 +79,16 @@ export default function SiteNav({ links, cta, onLogoClick }) {
             {l.label}
           </a>
         ))}
+        {/* the bar is too tight for the toggle at <=768px — it rides in the panel instead */}
+        <LanguageSwitch className="lang-switch-panel" onChange={() => setOpen(false)} />
       </div>
 
-      <button className="nav-cta" onClick={cta.onClick}>
-        {cta.label}
-      </button>
+      <div className="nav-end">
+        <LanguageSwitch className="lang-switch-bar" />
+        <button className="nav-cta" onClick={cta.onClick}>
+          {cta.label}
+        </button>
+      </div>
     </nav>
   );
 }
