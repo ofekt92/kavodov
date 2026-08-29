@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
-/** Toast state + a `showToast(type, msg)` trigger that auto-hides after 4s. */
 export function useToast() {
   const [toast, setToast] = useState({ show: false, type: "success", msg: "" });
   const timer = useRef(null);

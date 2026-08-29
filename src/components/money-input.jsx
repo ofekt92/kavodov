@@ -3,14 +3,9 @@ import { numberLocale } from "../i18n";
 
 const group = (n) => n.toLocaleString(numberLocale());
 
-/**
- * Shekel amount field: ₪ adornment plus thousands separators as you type.
- *
- * type="text" rather than "number" — a number input refuses to display grouped
- * digits, and its spinners are useless at these magnitudes. inputMode="numeric"
- * still gets the numeric keypad on mobile.
- */
-export function MoneyInput({ value, onChange, min = 0, max, emptyValue = 0, ...rest }) {
+export const MAX_AMOUNT = 100_000_000;
+
+export function MoneyInput({ value, onChange, min = 0, max = MAX_AMOUNT, emptyValue = 0, ...rest }) {
   const ref = useRef(null);
 
   const display =
@@ -21,13 +16,12 @@ export function MoneyInput({ value, onChange, min = 0, max, emptyValue = 0, ...r
   const handleChange = (e) => {
     const el = e.target;
     const caret = el.selectionStart ?? el.value.length;
-    // how many digits sit left of the caret — separators shift, digits don't
+
     const digitsBefore = el.value.slice(0, caret).replace(/\D/g, "").length;
 
     const digits = el.value.replace(/\D/g, "");
     if (digits === "") {
-      // calculators want a number to keep computing with; optional form fields
-      // pass emptyValue="" so a cleared field stays blank
+
       onChange(emptyValue);
     } else {
       let next = Number(digits);
@@ -36,7 +30,6 @@ export function MoneyInput({ value, onChange, min = 0, max, emptyValue = 0, ...r
       onChange(next);
     }
 
-    // put the caret back where the user was, counting in digits not characters
     requestAnimationFrame(() => {
       const node = ref.current;
       if (!node) return;

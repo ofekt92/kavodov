@@ -4,7 +4,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { LANGUAGES, DEFAULT_LANGUAGE } from "../i18n";
 
-/** Chevron pointing left; `flip` mirrors it to point right. */
 function Chevron({ flip }) {
   return (
     <svg
@@ -26,18 +25,8 @@ function Chevron({ flip }) {
   );
 }
 
-const RESUME_AFTER = 5000; // idle time before autoplay picks back up
+const RESUME_AFTER = 5000;
 
-/**
- * Draggable slider around an arbitrary list of cards. Loops forever and
- * advances on its own; a deliberate interaction (drag, arrow/dot click, keyboard
- * focus) halts autoplay, which restarts RESUME_AFTER ms after the user stops.
- * Hovering alone does not pause it.
- * Embla is re-created on language change so RTL/LTR drag direction stays correct.
- *
- * `delay` should be set from how long the slide takes to read — a slide of body
- * copy needs far longer than the 3.5s that suits a bare image.
- */
 export default function Carousel({ children, ariaLabel, delay = 5000 }) {
   const { t, i18n } = useTranslation();
   const dir = (LANGUAGES[i18n.language] || LANGUAGES[DEFAULT_LANGUAGE]).dir;
@@ -46,14 +35,14 @@ export default function Carousel({ children, ariaLabel, delay = 5000 }) {
     {
       direction: dir,
       align: "start",
-      containScroll: false, // loop needs the untrimmed snap list
+      containScroll: false,
       loop: true,
       skipSnaps: false,
-      // one card at a time on phones, centered so both neighbours peek evenly
+
       breakpoints: { "(max-width: 620px)": { align: "center" } },
     },
     [
-      // every stop/resume rule is handled below, so the plugin's own ones are off
+
       Autoplay({
         delay,
         stopOnInteraction: false,
@@ -86,9 +75,6 @@ export default function Carousel({ children, ariaLabel, delay = 5000 }) {
     });
   }, [embla, onSelect]);
 
-  /* ── autoplay pause/resume ────────────────────────────────
-     hold() stops it for as long as the interaction lasts;
-     release() restarts the 5s countdown once the user is done. */
   const resumeTimer = useRef(null);
   const reducedMotion = useRef(false);
   useEffect(() => {
@@ -113,7 +99,6 @@ export default function Carousel({ children, ariaLabel, delay = 5000 }) {
     }, RESUME_AFTER);
   }, [embla]);
 
-  // a drag counts as interaction too
   useEffect(() => {
     if (!embla) return;
     embla.on("pointerDown", hold).on("pointerUp", release);
@@ -123,7 +108,6 @@ export default function Carousel({ children, ariaLabel, delay = 5000 }) {
     };
   }, [embla, hold, release]);
 
-  /** Button handler: move, then start the 5s idle countdown. */
   const nudge = (fn) => () => {
     if (!embla) return;
     hold();
@@ -131,8 +115,6 @@ export default function Carousel({ children, ariaLabel, delay = 5000 }) {
     release();
   };
 
-  // prev sits on the right in RTL, so each arrow points at the outer edge.
-  // Drawn as SVG on purpose: ‹ and › are bidi-mirrored and flip in RTL text.
   const rtl = dir === "rtl";
 
   return (

@@ -3,18 +3,6 @@ import Home        from "./features/home";
 import Calculators from "./features/calculators";
 import Contact     from "./features/contact";
 
-/**
- * Simple hash router.
- *
- * Pages navigate via a custom event (see lib/navigate.js):
- *   navTo("contact")            → #/contact
- *   navTo("home", "services")   → home, scrolled to #services
- *
- * Hash routes:
- *   #/calculators → Calculators
- *   #/contact     → Contact
- *   anything else → Home (with optional in-page anchor like #services)
- */
 const PAGES = {
   calculators: Calculators,
   contact:     Contact,
@@ -43,12 +31,11 @@ export default function App() {
         return;
       }
 
-      // home
       window.location.hash = anchor ? `#${anchor}` : "";
       setPage("home");
 
       if (anchor) {
-        // wait for Home to mount, then scroll
+
         setTimeout(() => {
           document.getElementById(anchor)?.scrollIntoView({ behavior: "smooth" });
         }, 80);

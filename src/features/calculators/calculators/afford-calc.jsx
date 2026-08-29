@@ -8,6 +8,9 @@ import { ResultHero } from "../ui/result-hero";
 import { TipBox } from "../ui/tip-box";
 import { CalcCard } from "../ui/calc-card";
 import { MoneyInput } from "../../../components/money-input";
+import { CALC_ICONS } from "../../../lib/calc-icons";
+
+const Icon = CALC_ICONS.afford;
 
 export function AffordCalc() {
   const { t } = useTranslation();
@@ -32,7 +35,7 @@ export function AffordCalc() {
 
   return (
     <CalcCard
-      icon="💰" title={t("calculators.afford.title")}
+      icon={<Icon size={22} strokeWidth={2} aria-hidden="true" />} title={t("calculators.afford.title")}
       subtitle={t("calculators.afford.subtitle")}
       inputs={<>
         <Field label={t("calculators.afford.income1")}>
@@ -47,7 +50,7 @@ export function AffordCalc() {
         <Field label={t("calculators.afford.equity")}>
           <MoneyInput value={equity} onChange={setEquity} />
         </Field>
-        <RangeField label={t("calculators.afford.term")} min={10} max={30} value={years}
+        <RangeField label={t("calculators.afford.term")} min={5} max={30} step={5} value={years}
           onChange={setYears} display={t("calculators.common.yearsShort", { years })} />
         <RangeField label={t("calculators.afford.rate")} min={10} max={100} value={rate}
           onChange={setRate} display={`${(rate/10).toFixed(1)}%`} />

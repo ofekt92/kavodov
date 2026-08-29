@@ -9,19 +9,20 @@ import { siteNavLinks } from "../../lib/nav-links";
 import { navTo } from "../../lib/navigate";
 import { numberLocale } from "../../i18n";
 import { SERVICE_ICONS } from "../../lib/service-icons";
+import { WHY_ICONS } from "../../lib/why-icons";
 import { useMediaQuery } from "../../lib/use-media-query";
 import { MoneyInput } from "../../components/money-input";
 
 const fmt = v => "₪" + Math.round(v).toLocaleString(numberLocale());
 
-/* ─── Sub-components ─────────────────────────────────────── */
+const HERO_MAX_RATE = 20;
+
 function ServiceCard({ id, title, desc }) {
   const Icon = SERVICE_ICONS[id];
   return (
     <div className="service-card">
       <div className="service-icon">
-        {/* 2 rather than the 1.75 used on light surfaces — thin strokes lose
-            weight in gold-on-navy at this size */}
+
         {Icon ? <Icon size={24} strokeWidth={2} aria-hidden="true" /> : null}
       </div>
       <h3>{title}</h3>
@@ -30,10 +31,13 @@ function ServiceCard({ id, title, desc }) {
   );
 }
 
-function WhyItem({ icon, title, desc }) {
+function WhyItem({ id, title, desc }) {
+  const Icon = WHY_ICONS[id];
   return (
     <div className="why-item">
-      <div className="why-check">{icon}</div>
+      <div className="why-check">
+        {Icon ? <Icon size={28} strokeWidth={2} aria-hidden="true" /> : null}
+      </div>
       <div>
         <h4>{title}</h4>
         <p>{desc}</p>
@@ -44,7 +48,7 @@ function WhyItem({ icon, title, desc }) {
 
 function SweepText({ text }) {
   const words = String(text).split(" ");
-  // --p is 0..1 across the string, so the sweep takes the same time whatever the length
+
   const total = Math.max(1, words.reduce((n, w) => n + [...w].length, 0) - 1);
   let idx = 0;
   return (
@@ -89,7 +93,6 @@ function TestimonialCard({ text, initials, name, location }) {
   );
 }
 
-/* ─── Hero Mini Calculator ───────────────────────────────── */
 function HeroCalc() {
   const { t } = useTranslation();
   const [loan,  setLoan]  = useState(1000000);
@@ -119,8 +122,9 @@ function HeroCalc() {
       </div>
       <div className="calc-field">
         <label>{t("home.heroCalc.rate")}</label>
-        <input type="number" value={rate} step={0.1} min={0} max={20}
-          onChange={e => setRate(+e.target.value)} />
+
+        <input type="number" value={rate} step={0.1} min={0} max={HERO_MAX_RATE}
+          onChange={e => setRate(Math.min(Math.max(Number(e.target.value) || 0, 0), HERO_MAX_RATE))} />
       </div>
       <div className="calc-result">
         <div className="calc-result-lbl">{t("home.heroCalc.resultLabel")}</div>
@@ -133,7 +137,6 @@ function HeroCalc() {
   );
 }
 
-/* ─── Home Root ──────────────────────────────────────────── */
 export default function Home() {
   const { t } = useTranslation();
   useCalendlyWidget();
@@ -148,13 +151,12 @@ export default function Home() {
 
   return (
     <div className="home-page">
-      {/* NAV */}
+
       <SiteNav
         links={siteNavLinks("home", t)}
         cta={{ label: t("nav.ctaMeeting"), onClick: openCalendly }}
       />
 
-      {/* HERO */}
       <section className="hero">
         <div className="hero-grid">
           <div className="hero-content">
@@ -178,7 +180,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* STATS */}
       <div className="stats-bar">
         {stats.map((s, i) => (
           <div key={i} className="stat-item">
@@ -188,7 +189,6 @@ export default function Home() {
         ))}
       </div>
 
-      {/* SERVICES */}
       <section className="services-bg" id="services">
         <div className="container">
           <div className="services-header">
@@ -196,8 +196,7 @@ export default function Home() {
             <h2 className="section-title">{t("home.services.title")}</h2>
             <p className="section-sub">{t("home.services.sub")}</p>
           </div>
-          {/* Carousel only where vertical space is tight. On desktop all six
-              cards fit, and autoplay would scroll copy away mid-sentence. */}
+
           {narrow ? (
             <Carousel ariaLabel={t("home.services.title")} delay={7000}>
               {services.map((s, i) => <ServiceCard key={i} {...s} />)}
@@ -210,12 +209,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHY US */}
       <section className="why-bg">
         <div className="container">
+
+          <div className="why-header">
+            <div className="eyebrow">{t("home.why.tag")}</div>
+          </div>
           <div className="why-grid">
             <div>
-              <div className="eyebrow">{t("home.why.tag")}</div>
               <h2 className="section-title">
                 {t("home.why.titleLine1")}<br />{t("home.why.titleLine2")}
               </h2>
@@ -245,7 +246,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PROCESS */}
       <section className="process-bg" id="process">
         <div className="container">
           <div className="process-header">
@@ -261,16 +261,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
       <section className="testimonials-bg" id="testimonials">
         <div className="container">
           <div className="testimonials-header">
             <div className="eyebrow">{t("home.testimonials.tag")}</div>
             <h2 className="section-title">{t("home.testimonials.title")}</h2>
           </div>
-          {/* Only 3 of these, so a desktop carousel would have nothing to
-              scroll to — it's worth it on mobile purely to cut the stack height.
-              Revisit the desktop case if the count grows past a full row. */}
+
           {narrow ? (
             <Carousel ariaLabel={t("home.testimonials.title")} delay={8000}>
               {testimonials.map((tm, i) => <TestimonialCard key={i} {...tm} />)}
@@ -283,10 +280,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONTACT */}
       <ContactSection />
 
-      {/* FOOTER */}
       <SiteFooter />
     </div>
   );

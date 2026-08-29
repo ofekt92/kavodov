@@ -1,10 +1,5 @@
 import { navTo } from "./navigate";
 
-/**
- * The one nav menu every page shows.
- * @param {"home"|"calculators"|"contact"} current - page to mark active
- * @param {Function} t - i18next translator from the calling component
- */
 export function siteNavLinks(current, t) {
   const section = (anchor) => ({
     href: `#${anchor}`,

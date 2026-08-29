@@ -12,14 +12,11 @@ export const DEFAULT_LANGUAGE = "he";
 
 const STORAGE_KEY = "mashpro:lang";
 
-/** Saved choice → browser preference → Hebrew. */
 function detectLanguage() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved && LANGUAGES[saved]) return saved;
-  } catch {
-    /* private mode / storage disabled — fall through */
-  }
+  } catch {}
   const browser = navigator.language?.slice(0, 2);
   return LANGUAGES[browser] ? browser : DEFAULT_LANGUAGE;
 }
@@ -31,14 +28,10 @@ i18n.use(initReactI18next).init({
   },
   lng: detectLanguage(),
   fallbackLng: DEFAULT_LANGUAGE,
-  interpolation: { escapeValue: false }, // React already escapes
-  returnObjects: true,                   // SERVICES / PROCESS / … come back as arrays
+  interpolation: { escapeValue: false },
+  returnObjects: true,
 });
 
-/**
- * Mirrors the active language onto <html> so CSS logical properties flip
- * direction and the browser picks the right font/hyphenation rules.
- */
 function applyToDocument(lng) {
   const { dir } = LANGUAGES[lng] || LANGUAGES[DEFAULT_LANGUAGE];
   document.documentElement.lang = lng;
@@ -53,13 +46,10 @@ export function setLanguage(lng) {
   if (!LANGUAGES[lng]) return;
   try {
     localStorage.setItem(STORAGE_KEY, lng);
-  } catch {
-    /* choice just won't persist */
-  }
+  } catch {}
   i18n.changeLanguage(lng);
 }
 
-/** Number-formatting locale for the active language. */
 export const numberLocale = () =>
   (LANGUAGES[i18n.language] || LANGUAGES[DEFAULT_LANGUAGE]).numberLocale;
 

@@ -1,27 +1,44 @@
 import { useTranslation } from "react-i18next";
+import {
+  Phone,
+  Mail,
+  Clock,
+  MapPin,
+  ShieldCheck,
+  Timer,
+  BadgeCheck,
+} from "lucide-react";
 import ContactForm from "./contact-form";
 import { Toast, useToast } from "./toast";
 import { openCalendly } from "../lib/calendly";
 
-function ContactItem({ icon, label, value }) {
+function ContactItem({ icon: Icon, label, href, children, wide }) {
+  const Tag = href ? "a" : "div";
   return (
-    <div className="contact-item">
-      <div className="contact-item-icon">{icon}</div>
+    <Tag
+      className={`contact-item${wide ? " contact-item-wide" : ""}`}
+      {...(href ? { href } : {})}
+    >
+      <div className="contact-item-icon">
+        <Icon size={18} strokeWidth={2} aria-hidden="true" />
+      </div>
       <div className="contact-item-txt">
         <strong>{label}</strong>
-        <span>{value}</span>
+        <span>{children}</span>
       </div>
+    </Tag>
+  );
+}
+
+function TrustBadge({ icon: Icon, children }) {
+  return (
+    <div className="contact-trust-item">
+      <Icon size={16} strokeWidth={2.2} aria-hidden="true" />
+      <span>{children}</span>
     </div>
   );
 }
 
-/**
- * Full contact block (info column + lead form). Self-contained — owns its own
- * toast — so any page can drop it in above the footer.
- *
- * @param {string} [title] - heading override; defaults to the landing-page copy
- * @param {string} [intro] - paragraph override
- */
 export default function ContactSection({ title, intro }) {
   const { t } = useTranslation();
   const { toast, showToast } = useToast();
@@ -29,19 +46,23 @@ export default function ContactSection({ title, intro }) {
   const onFormSuccess = () => showToast("success", t("contact.toastSuccess"));
   const onFormError   = () => showToast("error",   t("contact.toastError"));
 
+  const phone = t("contact.phoneValue");
+  const email = t("contact.emailValue");
+
   return (
     <>
       <section className="contact-bg" id="contact">
         <div className="container">
+
+          <div className="contact-header">
+            <div className="eyebrow">{t("contact.tag")}</div>
+          </div>
           <div className="contact-grid">
             <div className="contact-info">
-              <div className="eyebrow">{t("contact.tag")}</div>
               <h2 className="section-title">{title ?? t("contact.defaultTitle")}</h2>
               <p>{intro ?? t("contact.defaultIntro")}</p>
 
-              {/* Calendly CTA */}
               <div className="calendly-cta">
-                <div className="calendly-cta-icon">📅</div>
                 <div className="calendly-cta-body">
                   <h4>{t("contact.calendlyTitle")}</h4>
                   <p>{t("contact.calendlyDesc")}</p>
@@ -52,10 +73,35 @@ export default function ContactSection({ title, intro }) {
               </div>
 
               <div className="contact-items">
-                <ContactItem icon="📞" label={t("contact.phoneLabel")}   value={t("contact.phoneValue")} />
-                <ContactItem icon="📧" label={t("contact.emailLabel")}   value={t("contact.emailValue")} />
-                <ContactItem icon="🕐" label={t("contact.hoursLabel")}   value={t("contact.hoursValue")} />
-                <ContactItem icon="📍" label={t("contact.addressLabel")} value={t("contact.addressValue")} />
+                <ContactItem
+                  icon={Phone}
+                  label={t("contact.phoneLabel")}
+                  href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+                >
+                  {phone}
+                </ContactItem>
+                <ContactItem
+                  icon={Mail}
+                  label={t("contact.emailLabel")}
+                  href={`mailto:${email}`}
+                >
+                  {email}
+                </ContactItem>
+                <ContactItem icon={MapPin} label={t("contact.addressLabel")}>
+                  {t("contact.addressValue")}
+                </ContactItem>
+
+                <ContactItem icon={Clock} label={t("contact.hoursLabel")}>
+                  {t("contact.hoursWeekday")}
+                  <br />
+                  {t("contact.hoursFriday")}
+                </ContactItem>
+              </div>
+
+              <div className="contact-trust">
+                <TrustBadge icon={ShieldCheck}>{t("contact.trustLicensed")}</TrustBadge>
+                <TrustBadge icon={Timer}>{t("contact.trustResponse")}</TrustBadge>
+                <TrustBadge icon={BadgeCheck}>{t("contact.trustFree")}</TrustBadge>
               </div>
             </div>
             <ContactForm onSubmit={onFormSuccess} onError={onFormError} />

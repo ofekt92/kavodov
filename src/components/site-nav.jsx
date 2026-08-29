@@ -2,23 +2,10 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "./language-switch";
 
-/**
- * Shared site header.
- *
- * Desktop: logo | inline links | gold CTA.
- * Mobile (<=768px): logo | hamburger + CTA, links collapse into a
- * slide-down panel beneath the bar.
- *
- * @param {{label: string, href?: string, onClick?: Function, active?: boolean}[]} links
- * @param {{label: string, onClick: Function}} cta
- * @param {Function} [onLogoClick] - defaults to scrolling to top
- */
 export default function SiteNav({ links, cta, onLogoClick }) {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
-  // Close on Escape, on a click outside the nav, and whenever the viewport
-  // grows past the mobile breakpoint
   useEffect(() => {
     if (!open) return;
 
@@ -36,7 +23,6 @@ export default function SiteNav({ links, cta, onLogoClick }) {
     };
   }, [open]);
 
-  // Run the link's own handler, then collapse the panel
   const handleLink = (link) => (e) => {
     link.onClick?.(e);
     setOpen(false);
@@ -79,7 +65,7 @@ export default function SiteNav({ links, cta, onLogoClick }) {
             {l.label}
           </a>
         ))}
-        {/* the bar is too tight for the toggle at <=768px — it rides in the panel instead */}
+
         <LanguageSwitch className="lang-switch-panel" onChange={() => setOpen(false)} />
       </div>
 

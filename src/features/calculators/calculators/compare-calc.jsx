@@ -1,13 +1,14 @@
 import { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { fmt, pmt } from "../utils";
+import { MAX_RATE, clampRate, fmt, pmt } from "../utils";
 import { Field } from "../ui/field";
 import { TipBox } from "../ui/tip-box";
 import { FullCard } from "../ui/full-card";
 import { MoneyInput } from "../../../components/money-input";
+import { CALC_ICONS } from "../../../lib/calc-icons";
 
-/* `name: null` means "still the localized default" — so the seeded bank names
-   follow the language until the visitor types over them. */
+const Icon = CALC_ICONS.compare;
+
 const BANK_DEFAULTS = [
   { name: null, rate: 4.15 },
   { name: null, rate: 4.22 },
@@ -48,7 +49,7 @@ export function CompareCalc() {
   const best = results[0];
 
   return (
-    <FullCard icon="⚖️" title={t("calculators.compare.title")}
+    <FullCard icon={<Icon size={22} strokeWidth={2} aria-hidden="true" />} title={t("calculators.compare.title")}
       subtitle={t("calculators.compare.subtitle")}>
       <div className="amort-controls" style={{marginBottom:"1.5rem"}}>
         <Field label={t("calculators.common.loanAmount")}>
@@ -70,8 +71,8 @@ export function CompareCalc() {
                 onChange={e => updateBank(i, "name", e.target.value)} />
             </Field>
             <Field label={t("calculators.compare.rate")}>
-              <input type="number" value={b.rate} step={0.01}
-                onChange={e => updateBank(i, "rate", +e.target.value)} />
+              <input type="number" value={b.rate} step={0.01} min={0} max={MAX_RATE}
+                onChange={e => updateBank(i, "rate", clampRate(e.target.value))} />
             </Field>
           </div>
         ))}

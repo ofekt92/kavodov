@@ -42,7 +42,7 @@
       "titleEm": "mortgage.",
       "titleTail": "Better terms.",
       "lead": "We negotiate with the banks on your behalf, find the best track for you, and save you tens of thousands of shekels over the life of your mortgage.",
-      "ctaMeeting": "📅 Book a meeting ›",
+      "ctaMeeting": "Book a meeting ›",
       "ctaLead": "Leave your details"
     },
     "heroCalc": {
@@ -116,22 +116,22 @@
       "sub": "An independent mortgage advisor acts solely in your interest, unlike a bank clerk who is bound to their institution's interests.",
       "items": [
         {
-          "icon": "✅",
+          "id": "independent",
           "title": "Independent advice",
           "desc": "We are not tied to any bank — we work with all of them and secure the lowest rate available."
         },
         {
-          "icon": "⚡",
+          "id": "efficiency",
           "title": "Saves time and money",
           "desc": "We handle the paperwork, the coordination and the negotiation — you just sign."
         },
         {
-          "icon": "🔒",
+          "id": "transparency",
           "title": "Full transparency",
           "desc": "You'll know every cost, comparison and alternative before you sign a single document."
         },
         {
-          "icon": "📞",
+          "id": "support",
           "title": "Support all the way",
           "desc": "From the first meeting to handing over the keys — we're available for every question."
         }
@@ -225,11 +225,15 @@
     "emailLabel": "Email",
     "emailValue": "info@mashpro.co.il",
     "hoursLabel": "Opening hours",
-    "hoursValue": "Sun–Thu 08:00–19:00 | Fri 08:00–13:00",
+    "hoursWeekday": "Sun–Thu 08:00–19:00",
+    "hoursFriday": "Fri 08:00–13:00",
     "addressLabel": "Address",
     "addressValue": "1 Rothschild Blvd, Tel Aviv",
     "toastSuccess": "✓ Message sent! We'll get back to you within an hour",
-    "toastError": "✗ Sending failed. Try again or call us instead"
+    "toastError": "✗ Sending failed. Try again or call us instead",
+    "trustLicensed": "Licensed advisors",
+    "trustResponse": "Reply within an hour",
+    "trustFree": "Free, no obligation"
   },
   "form": {
     "title": "Leave your details for a free consultation",
@@ -283,8 +287,11 @@
       "term": "Term (years)",
       "annualRate": "Annual rate %",
       "monthlyPayment": "Monthly payment",
+      "principal": "Principal",
+      "perMonthAvg": "{{amount}} / month on average",
       "totalPaid": "Total repaid",
       "totalInterest": "Total interest",
+      "interest": "Interest",
       "ltv": "LTV",
       "personalOffer": "Get a personal quote ›"
     },
@@ -301,6 +308,9 @@
       "typeVar": "Variable every 5 years",
       "resultSub": "About {{pct}}% of a net income of {{income}}",
       "propertyCost": "Property cost",
+      "totalOutlay": "Total cost to you",
+      "totalOutlaySub": "Down payment + total repaid",
+      "ltvWarning": "{{ltv}}% financing is above the {{max}}% ceiling for a first home — an upgrader is capped at 70% and an investment property at 50%. You will need more equity or a smaller loan.",
       "tipLabel": "Tip:",
       "tips": {
         "fix": "A fixed index-linked rate gives you planning certainty — but the prime rate may be cheaper in the short term.",

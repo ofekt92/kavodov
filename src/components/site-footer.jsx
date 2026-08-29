@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { navTo } from "../lib/navigate";
 
-/** Shared marketing footer. Section links route home + scroll to the anchor. */
 export default function SiteFooter() {
   const { t } = useTranslation();
   const toSection = (anchor) => (e) => { e.preventDefault(); navTo("home", anchor); };

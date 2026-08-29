@@ -19,7 +19,6 @@ export default function ContactForm({ onSubmit, onError }) {
   const [form, setForm]     = useState(initialForm);
   const [errors, setErrors] = useState({});
 
-  // Leads always land in the inbox in Hebrew, whichever language the visitor used
   const he = i18n.getFixedT("he");
 
   const update = (key, val) => {
@@ -97,7 +96,6 @@ export default function ContactForm({ onSubmit, onError }) {
       </div>
       <div className="form-field">
         <label htmlFor="service">{t("form.service")}</label>
-        {/* the select itself is unnamed — the hidden field below submits the Hebrew label */}
         <select id="service" value={form.service} onChange={e => update("service", e.target.value)}>
           {SERVICE_KEYS.map(key => (
             <option key={key} value={key}>{t(`form.serviceOptions.${key}`)}</option>
@@ -118,7 +116,6 @@ export default function ContactForm({ onSubmit, onError }) {
       <input type="hidden" name="_subject"
         value={he("form.subject", { firstName: form.firstName, lastName: form.lastName })} />
       <input type="hidden" name="_language" value={i18n.language} />
-      {/* proof at the friction point — same numbers as the home stats bar */}
       <div className="form-proof">
         <span>{t("form.proofClients")}</span>
         <span>{t("form.proofSatisfaction")}</span>

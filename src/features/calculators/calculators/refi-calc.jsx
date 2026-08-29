@@ -7,6 +7,9 @@ import { Metric } from "../ui/metric";
 import { ResultHero } from "../ui/result-hero";
 import { CalcCard } from "../ui/calc-card";
 import { MoneyInput } from "../../../components/money-input";
+import { CALC_ICONS } from "../../../lib/calc-icons";
+
+const Icon = CALC_ICONS.refi;
 
 export function RefiCalc() {
   const { t } = useTranslation();
@@ -33,7 +36,7 @@ export function RefiCalc() {
 
   return (
     <CalcCard
-      icon="🔄" title={t("calculators.refi.title")}
+      icon={<Icon size={22} strokeWidth={2} aria-hidden="true" />} title={t("calculators.refi.title")}
       subtitle={t("calculators.refi.subtitle")}
       inputs={<>
         <h3 className="section-sub">{t("calculators.refi.existingHeading")}</h3>

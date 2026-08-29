@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { setLanguage } from "../i18n";
 
-/** Label shows the language you'd get by clicking, not the current one. */
 const NEXT  = { he: "en", en: "he" };
 const SHORT = { he: "עב", en: "EN" };
 

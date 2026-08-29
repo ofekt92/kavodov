@@ -1,11 +1,14 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { fmt, pmt } from "../utils";
+import { MAX_RATE, clampRate, fmt, pmt } from "../utils";
 import { Field } from "../ui/field";
 import { Segmented } from "../ui/segmented";
 import { Metric } from "../ui/metric";
 import { FullCard } from "../ui/full-card";
 import { MoneyInput } from "../../../components/money-input";
+import { CALC_ICONS } from "../../../lib/calc-icons";
+
+const Icon = CALC_ICONS.amort;
 
 export function AmortCalc() {
   const { t } = useTranslation();
@@ -40,14 +43,15 @@ export function AmortCalc() {
   }, [loan, rate, years, freq]);
 
   return (
-    <FullCard icon="📊" title={t("calculators.amort.title")}
+    <FullCard icon={<Icon size={22} strokeWidth={2} aria-hidden="true" />} title={t("calculators.amort.title")}
       subtitle={t("calculators.amort.subtitle")}>
       <div className="amort-controls">
         <Field label={t("calculators.common.loanAmount")}>
           <MoneyInput value={loan} onChange={setLoan} />
         </Field>
         <Field label={t("calculators.common.annualRate")}>
-          <input type="number" value={rate} step={0.1} onChange={e => setRate(+e.target.value)} />
+          <input type="number" value={rate} step={0.1} min={0} max={MAX_RATE}
+            onChange={e => setRate(clampRate(e.target.value))} />
         </Field>
         <Field label={t("calculators.common.term")}>
           <select value={years} onChange={e => setYears(+e.target.value)}>

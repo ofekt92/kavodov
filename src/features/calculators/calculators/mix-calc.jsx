@@ -1,12 +1,14 @@
 import { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { fmt, pmt } from "../utils";
+import { MAX_RATE, clampRate, fmt, pmt } from "../utils";
 import { Field } from "../ui/field";
 import { TipBox } from "../ui/tip-box";
 import { FullCard } from "../ui/full-card";
 import { MoneyInput } from "../../../components/money-input";
+import { CALC_ICONS } from "../../../lib/calc-icons";
 
-/* Track labels live in the locale files — only the figures are state. */
+const Icon = CALC_ICONS.mix;
+
 const TRACK_COLORS   = ["#185FA5", "#c9a84c", "#d35400"];
 const TRACK_DEFAULTS = [
   { amt: 480000, rate: 4.2, years: 25 },
@@ -44,7 +46,7 @@ export function MixCalc() {
   }, [tracks, total]);
 
   return (
-    <FullCard icon="🧮" title={t("calculators.mix.title")}
+    <FullCard icon={<Icon size={22} strokeWidth={2} aria-hidden="true" />} title={t("calculators.mix.title")}
       subtitle={t("calculators.mix.subtitle")}>
       <Field label={t("calculators.mix.total")}>
         <div style={{maxWidth:300}}>
@@ -60,8 +62,8 @@ export function MixCalc() {
                 onChange={v => update(i, "amt", v)} />
             </Field>
             <Field label={i === 1 ? t("calculators.mix.ratePrime") : t("calculators.mix.rate")}>
-              <input type="number" value={track.rate} step={0.1}
-                onChange={e => update(i, "rate", +e.target.value)} />
+              <input type="number" value={track.rate} step={0.1} min={0} max={MAX_RATE}
+                onChange={e => update(i, "rate", clampRate(e.target.value))} />
             </Field>
             <Field label={t("calculators.mix.years")}>
               <select value={track.years} onChange={e => update(i, "years", +e.target.value)}>

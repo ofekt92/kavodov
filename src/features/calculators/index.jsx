@@ -11,14 +11,15 @@ import { AffordCalc } from "./calculators/afford-calc";
 import { AmortCalc } from "./calculators/amort-calc";
 import { MixCalc } from "./calculators/mix-calc";
 import { CompareCalc } from "./calculators/compare-calc";
+import { CALC_ICONS } from "../../lib/calc-icons";
 
 const TABS = [
-  { id: "monthly", icon: "🏠", Component: MonthlyCalc },
-  { id: "refi",    icon: "🔄", Component: RefiCalc    },
-  { id: "afford",  icon: "💰", Component: AffordCalc  },
-  { id: "amort",   icon: "📊", Component: AmortCalc   },
-  { id: "mix",     icon: "🧮", Component: MixCalc     },
-  { id: "compare", icon: "⚖️", Component: CompareCalc },
+  { id: "monthly", Component: MonthlyCalc },
+  { id: "refi",    Component: RefiCalc    },
+  { id: "afford",  Component: AffordCalc  },
+  { id: "amort",   Component: AmortCalc   },
+  { id: "mix",     Component: MixCalc     },
+  { id: "compare", Component: CompareCalc },
 ];
 
 export default function Calculators() {
@@ -28,15 +29,13 @@ export default function Calculators() {
   useCalendlyWidget();
 
   return (
-    <div>
-      {/* NAV */}
+    <div className="calculators-page">
       <SiteNav
         onLogoClick={() => navTo("home")}
         links={siteNavLinks("calculators", t)}
         cta={{ label: t("nav.ctaFree"), onClick: () => navTo("contact") }}
       />
 
-      {/* HERO */}
       <div className="page-hero">
         <div className="eyebrow">{t("calculators.heroTag")}</div>
         <h1>
@@ -47,34 +46,36 @@ export default function Calculators() {
         <p>{t("calculators.heroLead")}</p>
       </div>
 
-      {/* TABS */}
       <div className="tool-tabs-wrap">
         <div className="tool-tabs">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`tool-tab ${activeTab === tab.id ? "active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <span className="tab-icon">{tab.icon}</span> {t(`calculators.tabs.${tab.id}`)}
-            </button>
-          ))}
+          {TABS.map(tab => {
+            const Icon = CALC_ICONS[tab.id];
+            return (
+              <button
+                key={tab.id}
+                className={`tool-tab ${activeTab === tab.id ? "active" : ""}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                <span className="tab-icon">
+                  {Icon ? <Icon size={16} strokeWidth={2} aria-hidden="true" /> : null}
+                </span>
+                {t(`calculators.tabs.${tab.id}`)}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* MAIN */}
       <main className="main">
         <div className="calc-section active">
           {ActiveComponent && <ActiveComponent />}
         </div>
       </main>
 
-      {/* CONTACT — wrapper supplies the .home-page-scoped section styling */}
       <div className="home-page">
         <ContactSection />
       </div>
 
-      {/* FOOTER */}
       <footer>
         <div className="footer-logo">{t("brand.name")}<span>{t("brand.suffix")}</span></div>
         <p>{t("footer.calcDisclaimer")}<br />

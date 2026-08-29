@@ -2,10 +2,6 @@ import { useEffect } from "react";
 
 export const CALENDLY_URL = "https://calendly.com/shlomo-mashpro/new-meeting";
 
-/**
- * Opens Calendly in a popup widget. Falls back to a new tab
- * if the Calendly script hasn't loaded yet.
- */
 export function openCalendly() {
   if (window.Calendly?.initPopupWidget) {
     window.Calendly.initPopupWidget({ url: CALENDLY_URL });
@@ -15,7 +11,6 @@ export function openCalendly() {
   return false;
 }
 
-/** Lazy-loads the Calendly widget assets once, on mount. */
 export function useCalendlyWidget() {
   useEffect(() => {
     if (document.getElementById("calendly-script")) return;

@@ -1,12 +1,5 @@
 import { useRef } from "react";
 
-/**
- * Two-or-three-way choice shown as a segmented control instead of a <select>:
- * every option stays visible and picking one is a single tap.
- *
- * Built as a radiogroup with roving tabindex — Tab reaches the control, then
- * arrow keys move between options, which is what a native select gives you.
- */
 export function Segmented({ label, value, onChange, options }) {
   const ref = useRef(null);
 
@@ -14,7 +7,7 @@ export function Segmented({ label, value, onChange, options }) {
     const i = options.findIndex((o) => o.value === value);
     const next = options[(i + delta + options.length) % options.length];
     onChange(next.value);
-    // follow the selection with focus, the way native radios behave
+
     requestAnimationFrame(() => {
       const nodes = ref.current?.querySelectorAll("button");
       nodes?.[options.indexOf(next)]?.focus();
