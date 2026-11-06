@@ -10,7 +10,7 @@ export const LANGUAGES = {
 
 export const DEFAULT_LANGUAGE = "he";
 
-const STORAGE_KEY = "mashpro:lang";
+const STORAGE_KEY = "kavodov:lang";
 
 function detectLanguage() {
   try {

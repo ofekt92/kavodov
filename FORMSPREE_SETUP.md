@@ -1,6 +1,6 @@
 # הגדרת טופס יצירת קשר 📧
 
-הטופס באתר שולח פניות אל **shlomo@mashpro.co.il** באמצעות [Formspree](https://formspree.io).
+הטופס באתר שולח פניות אל **shlomo@kavodov.co.il** באמצעות [Formspree](https://formspree.io).
 
 ## למה Formspree?
 
@@ -17,15 +17,15 @@
 ### שלב 1 — הרשמה ל-Formspree
 
 1. כנס ל-[formspree.io](https://formspree.io)
-2. **Get Started Free** → הירשם עם `shlomo@mashpro.co.il`
+2. **Get Started Free** → הירשם עם `shlomo@kavodov.co.il`
 3. אשר את האימייל שמגיע (חשוב — בלי זה הטופס לא יעבוד)
 
 ### שלב 2 — יצירת הטופס
 
 1. בלוח הבקרה לחץ **+ New Form**
 2. מלא:
-   - **Form name**: `MashPro Contact Form`
-   - **Send to**: `shlomo@mashpro.co.il`
+   - **Form name**: `Kavodov Contact Form`
+   - **Send to**: `shlomo@kavodov.co.il`
 3. לחץ **Create Form**
 4. תקבל **Form ID** כמו: `xayzgwbp` (8 תווים אקראיים)
 5. ה-endpoint המלא יהיה: `https://formspree.io/f/xayzgwbp`
@@ -56,10 +56,10 @@ Cloudflare Pages יבנה ויפרסם אוטומטית תוך כדקה.
 
 ### שלב 4 — בדיקה
 
-1. כנס ל-`mashpro.co.il` (או ל-`mashpro.pages.dev` בינתיים)
+1. כנס ל-`kavodov.co.il` (או ל-`kavodov.pages.dev` בינתיים)
 2. גלול למטה לטופס "השאר פרטים לייעוץ חינם"
 3. מלא ושלח
-4. בדוק את `shlomo@mashpro.co.il` — אמור להגיע מייל תוך כמה שניות
+4. בדוק את `shlomo@kavodov.co.il` — אמור להגיע מייל תוך כמה שניות
 
 > 📌 **בפעם הראשונה** — Formspree ישלח לך מייל אישור עם כפתור "Allow this form to be submitted" — חייב ללחוץ אחרת הטופס יציג שגיאה.
 
@@ -69,7 +69,7 @@ Cloudflare Pages יבנה ויפרסם אוטומטית תוך כדקה.
 
 ```
 מאת:  Formspree <no-reply@formspree.io>
-אל:   shlomo@mashpro.co.il
+אל:   shlomo@kavodov.co.il
 נושא: פנייה חדשה מהאתר — ישראל ישראלי
 Reply-To: israel@example.com   ← אימייל הפונה
 
@@ -93,7 +93,7 @@ notes:       מעוניין במידע נוסף...
 
 ### Notifications
 - ✅ **Email notifications**: ON
-- ✅ **Notify me at**: `shlomo@mashpro.co.il`
+- ✅ **Notify me at**: `shlomo@kavodov.co.il`
 - אופציונלי: הוסף עוד מיילים (יועצים נוספים)
 
 ### Spam protection
@@ -101,7 +101,7 @@ notes:       מעוניין במידע נוסף...
 - ✅ **reCAPTCHA** (אם מקבלים הרבה spam — מוסיף "I'm not a robot")
 
 ### Auto-response (תגובה אוטומטית לפונה)
-- **Subject**: `קיבלנו את הפנייה שלך - משכנתאPRO`
+- **Subject**: `קיבלנו את הפנייה שלך - כבודוב`
 - **Body**:
   ```
   שלום,

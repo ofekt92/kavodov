@@ -1,8 +1,4 @@
 {
-  "brand": {
-    "name": "Kavodov",
-    "suffix": ""
-  },
   "meta": {
     "title": "Calculators & Tools | Kavodov"
   },
@@ -223,7 +219,7 @@
     "phoneLabel": "Phone",
     "phoneValue": "03-000-0000",
     "emailLabel": "Email",
-    "emailValue": "info@mashpro.co.il",
+    "emailValue": "info@kavodov.co.il",
     "hoursLabel": "Opening hours",
     "hoursWeekday": "Sun–Thu 08:00–19:00",
     "hoursFriday": "Fri 08:00–13:00",

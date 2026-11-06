@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "./language-switch";
+import { BRAND_NAME } from "../lib/brand";
 
 export default function SiteNav({ links, cta, onLogoClick }) {
   const [open, setOpen] = useState(false);
@@ -40,7 +41,7 @@ export default function SiteNav({ links, cta, onLogoClick }) {
         }}
         className="logo"
       >
-        <span className="logo-dot">●</span> {t("brand.name")}<span>{t("brand.suffix")}</span>
+        <span className="logo-dot">●</span> {BRAND_NAME}
       </a>
 
       <button

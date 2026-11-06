@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { navTo } from "../lib/navigate";
+import { BRAND_NAME } from "../lib/brand";
 
 export default function SiteFooter() {
   const { t } = useTranslation();
@@ -9,7 +10,7 @@ export default function SiteFooter() {
   return (
     <footer>
       <img className="footer-coin" src="/coin.webp" alt="" width="90" height="88" loading="lazy" />
-      <div className="footer-logo">{t("brand.name")}<span>{t("brand.suffix")}</span></div>
+      <div className="footer-logo">{BRAND_NAME}</div>
       <div className="footer-links">
         <a href="#" onClick={(e) => e.preventDefault()}>{t("footer.about")}</a>
         <a href="#services"     onClick={toSection("services")}>{t("footer.services")}</a>

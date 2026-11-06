@@ -1,10 +1,10 @@
 # ═══════════════════════════════════════════════════════════════
-#   MashPro — סקריפט push אוטומטי ל-GitHub
+#   Kavodov — סקריפט push אוטומטי ל-GitHub
 # ═══════════════════════════════════════════════════════════════
 #
 #  הסקריפט הזה:
 #  1. בודק אם יש לך Form ID מ-Formspree (ומזכיר לערוך אם לא)
-#  2. דוחף את כל ה-commits ל-mosheisr/Mashpro
+#  2. דוחף את כל ה-commits ל-mosheisr/Kavodov
 #  3. Cloudflare Pages יבנה ויפרסם תוך 90 שניות
 #
 #  הוראות הפעלה:
@@ -22,7 +22,7 @@ $ErrorActionPreference = "Stop"
 
 Write-Host ""
 Write-Host "╔═══════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║       MashPro - Push to GitHub                        ║" -ForegroundColor Cyan
+Write-Host "║       Kavodov - Push to GitHub                        ║" -ForegroundColor Cyan
 Write-Host "╚═══════════════════════════════════════════════════════╝" -ForegroundColor Cyan
 Write-Host ""
 
@@ -61,7 +61,7 @@ if ($content -match "YOUR_FORM_ID") {
     Write-Host "  ⚠ Formspree Form ID not configured!" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "    The contact form won't send emails until you set this up."
-    Write-Host "    1. Sign up at https://formspree.io with shlomo@mashpro.co.il"
+    Write-Host "    1. Sign up at https://formspree.io with shlomo@kavodov.co.il"
     Write-Host "    2. Create a new form and copy the Form ID (e.g., 'xayzgwbp')"
     Write-Host "    3. Edit src\pages\Home.jsx"
     Write-Host "       Find: const FORMSPREE_ENDPOINT = `"https://formspree.io/f/YOUR_FORM_ID`""
@@ -83,7 +83,7 @@ git log --oneline -10
 Write-Host ""
 
 # Step 5: Confirm
-$confirm = Read-Host "Push to mosheisr/Mashpro? (y/n)"
+$confirm = Read-Host "Push to mosheisr/Kavodov? (y/n)"
 if ($confirm -ne "y") {
     Write-Host "Aborted."
     exit 0
@@ -103,9 +103,9 @@ try {
     Write-Host "╚═══════════════════════════════════════════════════════╝" -ForegroundColor Green
     Write-Host ""
     Write-Host "Next steps:" -ForegroundColor Cyan
-    Write-Host "  • GitHub:     https://github.com/mosheisr/Mashpro"
-    Write-Host "  • Cloudflare: https://dash.cloudflare.com (check Pages > mashpro)"
-    Write-Host "  • Live site:  https://mashpro.co.il (live in ~90 seconds)"
+    Write-Host "  • GitHub:     https://github.com/mosheisr/Kavodov"
+    Write-Host "  • Cloudflare: https://dash.cloudflare.com (check Pages > kavodov)"
+    Write-Host "  • Live site:  https://kavodov.co.il (live in ~90 seconds)"
     Write-Host ""
 } catch {
     Write-Host ""

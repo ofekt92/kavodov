@@ -5,6 +5,7 @@ import SiteNav from "../../components/site-nav";
 import { siteNavLinks } from "../../lib/nav-links";
 import ContactSection from "../../components/contact-section";
 import { useCalendlyWidget } from "../../lib/calendly";
+import { BRAND_NAME } from "../../lib/brand";
 import { MonthlyCalc } from "./calculators/monthly-calc";
 import { RefiCalc } from "./calculators/refi-calc";
 import { AffordCalc } from "./calculators/afford-calc";
@@ -77,7 +78,7 @@ export default function Calculators() {
       </div>
 
       <footer>
-        <div className="footer-logo">{t("brand.name")}<span>{t("brand.suffix")}</span></div>
+        <div className="footer-logo">{BRAND_NAME}</div>
         <p>{t("footer.calcDisclaimer")}<br />
            {t("footer.copyright")}</p>
       </footer>
