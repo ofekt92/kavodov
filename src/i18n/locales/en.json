@@ -132,6 +132,7 @@
           "desc": "From the first meeting to handing over the keys — we're available for every question."
         }
       ],
+      "rate": "4.2%",
       "rateLabel": "Average rate we secured for clients last quarter",
       "banks": [
         {
@@ -265,9 +266,9 @@
   },
   "calculators": {
     "heroTag": "Free professional tools",
-    "heroTitleLead": "Smart mortgage ",
-    "heroTitleEm": "calculators",
-    "heroTitleTail": "",
+    "heroTitleLead": "Smart ",
+    "heroTitleEm": "mortgage",
+    "heroTitleTail": " calculators",
     "heroLead": "Accurate tools to help you make the right financial decisions — before you approach the bank.",
     "tabs": {
       "monthly": "Monthly payment",

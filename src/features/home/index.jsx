@@ -227,7 +227,7 @@ export default function Home() {
             </div>
             <div className="why-visual">
               <div className="rate-display">
-                <div className="rate">4.2%</div>
+                <div className="rate">{t("home.why.rate")}</div>
                 <div className="rate-lbl">{t("home.why.rateLabel")}</div>
               </div>
               <div className="rate-banks">

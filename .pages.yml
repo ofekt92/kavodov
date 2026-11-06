@@ -1,0 +1,209 @@
+settings:
+  content:
+    merge: true
+
+components:
+  home:
+    type: object
+    label: דף הבית
+    fields:
+      - name: hero
+        label: אזור פתיחה
+        type: object
+        fields:
+          - { name: tag, label: תגית עליונה, type: string, required: true }
+          - name: titleLead
+            label: כותרת - תחילת השורה הראשונה
+            type: string
+            required: true
+            description: יש להשאיר רווח בסוף הטקסט
+          - { name: titleEm, label: כותרת - המילה המודגשת, type: string, required: true }
+          - { name: titleTail, label: כותרת - שורה שנייה, type: string, required: true }
+          - { name: lead, label: טקסט פתיחה, type: text, required: true }
+          - { name: ctaMeeting, label: כפתור קביעת פגישה, type: string, required: true }
+          - { name: ctaLead, label: כפתור השארת פרטים, type: string, required: true }
+      - name: stats
+        label: מספרים
+        type: object
+        list:
+          min: 4
+          max: 4
+          collapsible:
+            collapsed: true
+            summary: "{num} {lbl}"
+        fields:
+          - { name: num, label: מספר, type: string, required: true }
+          - { name: lbl, label: תיאור, type: string, required: true }
+      - name: services
+        label: שירותים
+        type: object
+        fields:
+          - { name: tag, label: תגית עליונה, type: string, required: true }
+          - { name: title, label: כותרת, type: string, required: true }
+          - { name: sub, label: תת-כותרת, type: text, required: true }
+          - name: items
+            label: רשימת שירותים
+            type: object
+            list:
+              min: 6
+              max: 6
+              collapsible:
+                collapsed: true
+                summary: "{title}"
+            fields:
+              - { name: id, type: string, hidden: true, required: true }
+              - { name: title, label: שם השירות, type: string, required: true }
+              - { name: desc, label: תיאור, type: text, required: true }
+      - name: why
+        label: למה אנחנו
+        type: object
+        fields:
+          - { name: tag, label: תגית עליונה, type: string, required: true }
+          - { name: titleLine1, label: כותרת - שורה ראשונה, type: string, required: true }
+          - { name: titleLine2, label: כותרת - שורה שנייה, type: string, required: true }
+          - { name: sub, label: תת-כותרת, type: text, required: true }
+          - name: items
+            label: יתרונות
+            type: object
+            list:
+              min: 4
+              max: 4
+              collapsible:
+                collapsed: true
+                summary: "{title}"
+            fields:
+              - { name: id, type: string, hidden: true, required: true }
+              - { name: title, label: כותרת, type: string, required: true }
+              - { name: desc, label: תיאור, type: text, required: true }
+          - { name: rate, label: ריבית ממוצעת, type: string, required: true }
+          - { name: rateLabel, label: תיאור הריבית הממוצעת, type: string, required: true }
+          - name: banks
+            label: ריביות לפי בנק
+            type: object
+            list:
+              min: 1
+              max: 8
+              collapsible:
+                collapsed: true
+                summary: "{name} {rate}"
+            fields:
+              - { name: name, label: שם הבנק, type: string, required: true }
+              - { name: rate, label: ריבית, type: string, required: true }
+          - { name: disclaimer, label: הערה מתחת לריביות, type: string, required: true }
+      - name: process
+        label: תהליך
+        type: object
+        fields:
+          - { name: tag, label: תגית עליונה, type: string, required: true }
+          - { name: title, label: כותרת, type: string, required: true }
+          - { name: sub, label: תת-כותרת, type: text, required: true }
+          - name: steps
+            label: שלבים
+            type: object
+            list:
+              min: 4
+              max: 4
+              collapsible:
+                collapsed: true
+                summary: "{title}"
+            fields:
+              - { name: title, label: כותרת, type: string, required: true }
+              - { name: desc, label: תיאור, type: text, required: true }
+      - name: testimonials
+        label: המלצות
+        type: object
+        fields:
+          - { name: tag, label: תגית עליונה, type: string, required: true }
+          - { name: title, label: כותרת, type: string, required: true }
+          - name: items
+            label: רשימת המלצות
+            type: object
+            list:
+              min: 1
+              max: 12
+              collapsible:
+                collapsed: true
+                summary: "{name}"
+            fields:
+              - { name: name, label: שם, type: string, required: true }
+              - { name: initials, label: ראשי תיבות, type: string, required: true }
+              - { name: location, label: עיר ושירות, type: string, required: true }
+              - { name: text, label: ההמלצה, type: text, required: true }
+
+  contactPage:
+    type: object
+    label: עמוד יצירת קשר
+    fields:
+      - { name: heroTag, label: תגית עליונה, type: string, required: true }
+      - name: heroTitleLead
+        label: כותרת - תחילת השורה
+        type: string
+        required: true
+        description: יש להשאיר רווח בסוף הטקסט
+      - { name: heroTitleEm, label: כותרת - המילה המודגשת, type: string, required: true }
+      - { name: heroLead, label: טקסט פתיחה, type: text, required: true }
+      - { name: sectionTitle, label: כותרת אזור הפרטים, type: string, required: true }
+      - { name: sectionIntro, label: טקסט אזור הפרטים, type: text, required: true }
+
+  contact:
+    type: object
+    label: פרטי התקשרות
+    fields:
+      - { name: phoneValue, label: טלפון, type: string, required: true }
+      - name: emailValue
+        label: אימייל
+        type: string
+        required: true
+        pattern:
+          regex: "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+          message: כתובת אימייל לא תקינה
+      - { name: addressValue, label: כתובת, type: string, required: true }
+      - { name: hoursWeekday, label: שעות פעילות - ימי חול, type: string, required: true }
+      - { name: hoursFriday, label: שעות פעילות - שישי, type: string, required: true }
+      - { name: defaultTitle, label: כותרת אזור יצירת קשר, type: string, required: true }
+      - { name: defaultIntro, label: טקסט אזור יצירת קשר, type: text, required: true }
+      - { name: calendlyTitle, label: קביעת פגישה - כותרת, type: string, required: true }
+      - { name: calendlyDesc, label: קביעת פגישה - תיאור, type: string, required: true }
+
+  form:
+    type: object
+    label: טופס יצירת קשר
+    fields:
+      - { name: title, label: כותרת הטופס, type: string, required: true }
+      - { name: proofClients, label: הוכחה חברתית - לקוחות, type: string, required: true }
+      - { name: proofSatisfaction, label: הוכחה חברתית - שביעות רצון, type: string, required: true }
+      - { name: proofExperience, label: הוכחה חברתית - ניסיון, type: string, required: true }
+
+  footer:
+    type: object
+    label: כותרת תחתונה
+    fields:
+      - { name: license, label: רישיון, type: string, required: true }
+      - { name: copyright, label: זכויות יוצרים, type: string, required: true }
+      - { name: disclaimer, label: הצהרה משפטית, type: text, required: true }
+      - { name: calcDisclaimer, label: הצהרה משפטית - מחשבונים, type: text, required: true }
+
+content:
+  - name: site_he
+    label: תוכן האתר - עברית
+    type: file
+    path: src/i18n/locales/he.json
+    format: json
+    fields:
+      - { name: home, component: home }
+      - { name: contactPage, component: contactPage }
+      - { name: contact, component: contact }
+      - { name: form, component: form }
+      - { name: footer, component: footer }
+
+  - name: site_en
+    label: תוכן האתר - אנגלית
+    type: file
+    path: src/i18n/locales/en.json
+    format: json
+    fields:
+      - { name: home, component: home }
+      - { name: contactPage, component: contactPage }
+      - { name: contact, component: contact }
+      - { name: form, component: form }
+      - { name: footer, component: footer }
