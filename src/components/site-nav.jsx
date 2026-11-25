@@ -41,7 +41,7 @@ export default function SiteNav({ links, cta, onLogoClick }) {
         }}
         className="logo"
       >
-        <span className="logo-dot" aria-hidden="true" />{BRAND_NAME}
+        <img className="logo-coin" src="/coin-icon.png" alt="" width="30" height="30" />{BRAND_NAME}
       </a>
 
       <button
