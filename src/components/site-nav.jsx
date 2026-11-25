@@ -41,7 +41,7 @@ export default function SiteNav({ links, cta, onLogoClick }) {
         }}
         className="logo"
       >
-        <span className="logo-dot">●</span> {BRAND_NAME}
+        <span className="logo-dot" aria-hidden="true" />{BRAND_NAME}
       </a>
 
       <button

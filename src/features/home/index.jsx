@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo } from "react";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import SiteNav from "../../components/site-nav";
 import SiteFooter from "../../components/site-footer";
@@ -7,15 +7,9 @@ import Carousel from "../../components/carousel";
 import { openCalendly, useCalendlyWidget } from "../../lib/calendly";
 import { siteNavLinks } from "../../lib/nav-links";
 import { navTo } from "../../lib/navigate";
-import { numberLocale } from "../../i18n";
 import { SERVICE_ICONS } from "../../lib/service-icons";
 import { WHY_ICONS } from "../../lib/why-icons";
 import { useMediaQuery } from "../../lib/use-media-query";
-import { MoneyInput } from "../../components/money-input";
-
-const fmt = v => "₪" + Math.round(v).toLocaleString(numberLocale());
-
-const HERO_MAX_RATE = 20;
 
 function ServiceCard({ id, title, desc }) {
   const Icon = SERVICE_ICONS[id];
@@ -93,50 +87,6 @@ function TestimonialCard({ text, initials, name, location }) {
   );
 }
 
-function HeroCalc() {
-  const { t } = useTranslation();
-  const [loan,  setLoan]  = useState(1000000);
-  const [years, setYears] = useState(25);
-  const [rate,  setRate]  = useState(4.5);
-
-  const monthly = useMemo(() => {
-    const r = rate / 100 / 12;
-    const n = years * 12;
-    return r === 0 ? loan / n : loan * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
-  }, [loan, years, rate]);
-
-  return (
-    <div className="hero-card">
-      <h3>{t("home.heroCalc.title")}</h3>
-      <div className="calc-field">
-        <label>{t("home.heroCalc.amount")}</label>
-        <MoneyInput value={loan} onChange={setLoan} />
-      </div>
-      <div className="calc-field">
-        <label>{t("home.heroCalc.term")}</label>
-        <select value={years} onChange={e => setYears(+e.target.value)}>
-          {[10,15,20,25,30].map(y => (
-            <option key={y} value={y}>{t("home.heroCalc.termOption", { years: y })}</option>
-          ))}
-        </select>
-      </div>
-      <div className="calc-field">
-        <label>{t("home.heroCalc.rate")}</label>
-
-        <input type="number" value={rate} step={0.1} min={0} max={HERO_MAX_RATE}
-          onChange={e => setRate(Math.min(Math.max(Number(e.target.value) || 0, 0), HERO_MAX_RATE))} />
-      </div>
-      <div className="calc-result">
-        <div className="calc-result-lbl">{t("home.heroCalc.resultLabel")}</div>
-        <div className="calc-result-val">{fmt(monthly)}</div>
-      </div>
-      <button className="calc-btn" onClick={() => navTo("contact")}>
-        {t("home.heroCalc.cta")}
-      </button>
-    </div>
-  );
-}
-
 export default function Home() {
   const { t } = useTranslation();
   useCalendlyWidget();
@@ -145,7 +95,6 @@ export default function Home() {
   const stats        = t("home.stats",             { returnObjects: true });
   const services     = t("home.services.items",    { returnObjects: true });
   const whyUs        = t("home.why.items",         { returnObjects: true });
-  const bankRates    = t("home.why.banks",         { returnObjects: true });
   const process      = t("home.process.steps",     { returnObjects: true });
   const testimonials = t("home.testimonials.items", { returnObjects: true });
 
@@ -176,7 +125,6 @@ export default function Home() {
               </a>
             </div>
           </div>
-          <HeroCalc />
         </div>
       </section>
 
@@ -214,34 +162,13 @@ export default function Home() {
 
           <div className="why-header">
             <div className="eyebrow">{t("home.why.tag")}</div>
+            <h2 className="section-title">
+              {t("home.why.titleLine1")}<br />{t("home.why.titleLine2")}
+            </h2>
+            <p className="section-sub">{t("home.why.sub")}</p>
           </div>
-          <div className="why-grid">
-            <div>
-              <h2 className="section-title">
-                {t("home.why.titleLine1")}<br />{t("home.why.titleLine2")}
-              </h2>
-              <p className="section-sub">{t("home.why.sub")}</p>
-              <div className="why-list">
-                {whyUs.map((w, i) => <WhyItem key={i} {...w} />)}
-              </div>
-            </div>
-            <div className="why-visual">
-              <div className="rate-display">
-                <div className="rate">{t("home.why.rate")}</div>
-                <div className="rate-lbl">{t("home.why.rateLabel")}</div>
-              </div>
-              <div className="rate-banks">
-                {bankRates.map((b, i) => (
-                  <div key={i} className="rate-bank-item">
-                    <span className="bank-name">{b.name}</span>
-                    <span className="bank-rate">{b.rate}</span>
-                  </div>
-                ))}
-              </div>
-              <p style={{color:"rgba(255,255,255,0.35)",fontSize:11,textAlign:"center",marginTop:12}}>
-                {t("home.why.disclaimer")}
-              </p>
-            </div>
+          <div className="why-list">
+            {whyUs.map((w, i) => <WhyItem key={i} {...w} />)}
           </div>
         </div>
       </section>

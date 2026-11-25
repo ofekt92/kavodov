@@ -75,21 +75,6 @@ components:
               - { name: id, type: string, hidden: true, required: true }
               - { name: title, label: כותרת, type: string, required: true }
               - { name: desc, label: תיאור, type: text, required: true }
-          - { name: rate, label: ריבית ממוצעת, type: string, required: true }
-          - { name: rateLabel, label: תיאור הריבית הממוצעת, type: string, required: true }
-          - name: banks
-            label: ריביות לפי בנק
-            type: object
-            list:
-              min: 1
-              max: 8
-              collapsible:
-                collapsed: true
-                summary: "{name} {rate}"
-            fields:
-              - { name: name, label: שם הבנק, type: string, required: true }
-              - { name: rate, label: ריבית, type: string, required: true }
-          - { name: disclaimer, label: הערה מתחת לריביות, type: string, required: true }
       - name: process
         label: תהליך
         type: object

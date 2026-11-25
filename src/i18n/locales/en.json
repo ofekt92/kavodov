@@ -41,15 +41,6 @@
       "ctaMeeting": "Book a meeting ›",
       "ctaLead": "Leave your details"
     },
-    "heroCalc": {
-      "title": "Monthly payment calculator",
-      "amount": "Mortgage amount (₪)",
-      "term": "Term (years)",
-      "termOption": "{{years}} years",
-      "rate": "Annual interest rate (%)",
-      "resultLabel": "Estimated monthly payment",
-      "cta": "Get a personal quote ›"
-    },
     "stats": [
       {
         "num": "+3,200",
@@ -131,28 +122,7 @@
           "title": "Support all the way",
           "desc": "From the first meeting to handing over the keys — we're available for every question."
         }
-      ],
-      "rate": "4.2%",
-      "rateLabel": "Average rate we secured for clients last quarter",
-      "banks": [
-        {
-          "name": "Bank Hapoalim",
-          "rate": "4.15%"
-        },
-        {
-          "name": "Bank Leumi",
-          "rate": "4.22%"
-        },
-        {
-          "name": "Mizrahi Tefahot",
-          "rate": "4.19%"
-        },
-        {
-          "name": "Discount Bank",
-          "rate": "4.31%"
-        }
-      ],
-      "disclaimer": "*Figures shown for illustration only"
+      ]
     },
     "process": {
       "tag": "Our process",
